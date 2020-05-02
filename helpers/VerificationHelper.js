@@ -1,18 +1,24 @@
 const models = require('../models');
 const User = models.User;
+const Annex = models.Annex;
 
 class VerificationHelper {
 
-    static async emailAlreadyExiest(email, res) {
+    static async emailAlreadyExiest(email,table, res) {
         try {
-            const user = await this.userFromEmail(email);
-            if (user) {
-                let response = {
+            let response;
+            if (table == "user"){
+                response = await this.userFromEmail(email);
+            } else {
+                response = await this.annexFromEmail(email);
+            }
+            if (response) {
+                let message = {
                     Code: 400,
                     Message: "Cet email existe déjà"
                 };
                 try {
-                    res.status(response.Code).json(response.Message);
+                    res.status(message.Code).json(message.Message);
                 } catch (e) {
                     console.log(e);
                 }
@@ -57,6 +63,14 @@ class VerificationHelper {
         return User.findOne({
             where: {
                 login: login
+            }
+        });
+    }
+
+    static async annexFromEmail(email) {
+        return Annex.findOne({
+            where: {
+                email: email
             }
         });
     }
