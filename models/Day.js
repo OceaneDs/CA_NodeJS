@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        name:DataTypes.STRING,
+        name: DataTypes.STRING,
     }, {});
-    Day.associate = function(models) {
-        ///Day.hasMany(models.User);
+    Day.associate = function (models) {
+        Day.hasMany(models.AnnexAvailability);
     };
     return Day;
 };

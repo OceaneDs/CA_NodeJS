@@ -4,10 +4,10 @@ const Annex = models.Annex;
 
 class VerificationHelper {
 
-    static async emailAlreadyExiest(email,table, res) {
+    static async emailAlreadyExiest(email, table, res) {
         try {
             let response;
-            if (table == "user"){
+            if (table == "user") {
                 response = await this.userFromEmail(email);
             } else {
                 response = await this.annexFromEmail(email);
@@ -58,6 +58,14 @@ class VerificationHelper {
             }
         });
     }
+
+    static async userFromToken(token) {
+        return User.findOne({
+            where: {
+                token
+            }
+        });
+    };
 
     static async userFromLogin(login) {
         return User.findOne({
