@@ -15,4 +15,16 @@ module.exports = function (app) {
             res.status(409).json(err);
         }
     });
+
+    /**
+     *
+     */
+    app.put("/user/validate/:idUser",AuthMiddleware.isAdmin(),async (req,res)=>{
+        try {
+            const annex = await UserController.validateUser(+req.params.idUser);
+            res.status(200).json(annex);
+        } catch (err) {
+            res.status(409).json(err);
+        }
+    });
 };

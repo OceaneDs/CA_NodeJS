@@ -17,6 +17,20 @@ class UserController {
         });
     }
 
+    /**
+     *
+     * @param userId
+     * @returns {Promise<void>}
+     */
+    static async validateUser(userId){
+
+        const user = await User.update({ validForVolunteer: true }, {
+            where: {
+                id: userId
+            }
+        });
+    }
+
 }
 
 module.exports = UserController;
