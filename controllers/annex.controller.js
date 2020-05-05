@@ -52,6 +52,11 @@ class AnnexController {
         return annex;
     }
 
+    /**
+     * 
+     * @param annexId
+     * @returns {Promise<void>}
+     */
     static async banAnnex(annexId){
 
         const annex = await Annex.update({ active: false }, {

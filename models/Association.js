@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         name: DataTypes.STRING,
         description: DataTypes.STRING,
-        city: DataTypes.STRING
+        city: DataTypes.STRING,
+        active:DataTypes.BOOLEAN
     }, {});
     Association.associate = function (models) {
         Association.hasMany(models.Annex);
