@@ -42,12 +42,11 @@ module.exports = function (app) {
     app.post('/annex/create', bodyParser.json(),AuthMiddleware.auth(), async (req, res) => {
         const {name, email, street, zipCode, city, phone, associationId,horaires} = req.body;
         const allRequireParams = Verification.allRequiredParam(name, email, street, zipCode, city, phone, associationId, res);
-        const emailAlreadyExist = await Verification.emailAlreadyExiest(email, "annex", res);
-        console.log(emailAlreadyExist);
-        if (!emailAlreadyExist) {
+        if (!allRequireParams) {
             return;
         }
-        if (!allRequireParams) {
+        const emailAlreadyExist = await Verification.emailAlreadyExiest(email, "annex", res);
+        if (!emailAlreadyExist) {
             return;
         }
         try {

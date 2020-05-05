@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         city: DataTypes.STRING,
         phone: DataTypes.INTEGER,
         active: DataTypes.BOOLEAN,
+        valid: DataTypes.BOOLEAN,
     }, {});
     Annex.associate = function(models) {
         Annex.belongsTo(models.Association);

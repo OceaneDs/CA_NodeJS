@@ -26,17 +26,21 @@ class AuthController {
 
         const role = await Role.findOne({
             where: {
-                id: roleId
+                id: 1
             }
         });
 
-        let image;
-        if (imageLink !== null) {
+        let image = null;
+        if (imageLink != undefined) {
             image = await Image.create({
                 link: imageLink
             });
         }
         ;
+        let validForVolunteer = null;
+        if (roleId == 2) {
+            validForVolunteer = false;
+        }
         const user = await User.create({
             login,
             firstname,
@@ -49,8 +53,11 @@ class AuthController {
             password: await bcrypt.hash(password, 10),
             active: true,
             birthdate: birthdate,
+            validForVolunteer: validForVolunteer
         });
-        await user.setImage(image);
+        if (image != null) {
+            await user.setImage(image);
+        }
         await user.setRole(role);
         return user;
     }
@@ -82,7 +89,11 @@ class AuthController {
                     }
                 );
                 userFound.token = token;
-                return await userFound.save();
+                if (userFound.active) {
+                    return await userFound.save();
+                } else if (!userFound.active) {
+                    return "Vous avez été banni";
+                }
             }
         }
         return "L' email ou le mot de passe est incorrect";

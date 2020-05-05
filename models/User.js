@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) => {
         phone: DataTypes.INTEGER,
         birthdate: DataTypes.DATE,
         active: DataTypes.BOOLEAN,
-        token: DataTypes.STRING
+        token: DataTypes.STRING,
+        validForVolunteer: DataTypes.BOOLEAN
+
     }, {});
     User.associate = function (models) {
         User.belongsTo(models.Role);

@@ -31,6 +31,7 @@ class AnnexController {
             city,
             phone,
             active: true,
+            valid: false,
         });
         await annex.setAssociation(association);
         await annex.addUser(user);
@@ -53,7 +54,7 @@ class AnnexController {
     }
 
     /**
-     * 
+     *
      * @param annexId
      * @returns {Promise<void>}
      */

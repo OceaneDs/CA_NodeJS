@@ -23,14 +23,22 @@ module.exports = function (app) {
      */
     app.post('/auth/subscribe', bodyParser.json(), async (req, res) => {
         const {login, firstname, email, lastname, password, passwordConfirm, street, zipCode, city, phone, roleId, birthdate} = req.body;
-        const allRequireParams = Verification.allRequiredParam(login,birthdate, firstname, email, lastname, password, passwordConfirm, street, zipCode, city, phone, roleId, res);
-        const emailAlreadyExist = Verification.emailAlreadyExiest(email,"user", res);
-        const loginAllreadyExist = Verification.loginAlreadyExiest(login, res);
+        const allRequireParams = Verification.allRequiredParam(login, birthdate, firstname, email, lastname, password, passwordConfirm, street, zipCode, city, phone, roleId, res);
+        if (!allRequireParams) {
+            return;
+        }
+        const emailAlreadyExist = await Verification.emailAlreadyExiest(email, "user", res);
+        if (!emailAlreadyExist) {
+            return;
+        }
+        const loginAllreadyExist = await Verification.loginAlreadyExiest(login, res);
+        if (!loginAllreadyExist) {
+            return;
+        }
         const passwordConfirmationIsGoog = Verification.passwordCormimationGood(password, passwordConfirm, res);
-        if (!allRequireParams) return;
-        if (!emailAlreadyExist) return;
-        if (!loginAllreadyExist) return;
-        if (!passwordConfirmationIsGoog) return;
+        if (!passwordConfirmationIsGoog) {
+            return;
+        }
         let pieceIdentity;
         let link;
         if (roleId == 2) {
