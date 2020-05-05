@@ -16,7 +16,7 @@ class AnnexController {
      * @param associationId
      * @returns {Promise<void>}
      */
-    static async createAnnex(name, email, street, zipCode, city, phone, associationId, horaire,user) {
+    static async createAnnex(name, email, street, zipCode, city, phone, associationId, horaire, user) {
 
         const association = await Association.findOne({
             where: {
@@ -42,12 +42,12 @@ class AnnexController {
                         id: horaire[i].idJour
                     }
                 });
-               const annexAvailability = await AnnexAvailability.create({
-                   openingTime:horaire[i].openingTime,
-                   closingTime:horaire[i].closingTime
-               });
-              await annexAvailability.setDay(day);
-              await annexAvailability.setAnnex(annex);
+                const annexAvailability = await AnnexAvailability.create({
+                    openingTime: horaire[i].openingTime,
+                    closingTime: horaire[i].closingTime
+                });
+                await annexAvailability.setDay(day);
+                await annexAvailability.setAnnex(annex);
             }
         }
         return annex;
@@ -58,9 +58,23 @@ class AnnexController {
      * @param annexId
      * @returns {Promise<void>}
      */
-    static async banAnnex(annexId){
+    static async banAnnex(annexId) {
 
-        const annex = await Annex.update({ active: false }, {
+        const annex = await Annex.update({active: false}, {
+            where: {
+                id: annexId
+            }
+        });
+    }
+
+    /**
+     *
+     * @param annexId
+     * @returns {Promise<void>}
+     */
+    static async validateAnnex(annexId) {
+
+        const annex = await Annex.update({valid: true}, {
             where: {
                 id: annexId
             }

@@ -69,4 +69,16 @@ module.exports = function (app) {
             res.status(409).json(err);
         }
     });
+
+    /**
+     *
+     */
+    app.put("/annex/validate/:idAnnex",AuthMiddleware.isAdmin(),async (req,res)=>{
+        try {
+            const annex = await AnnexController.validateAnnex(+req.params.idAnnex);
+            res.status(200).json(annex);
+        } catch (err) {
+            res.status(409).json(err);
+        }
+    });
 };
