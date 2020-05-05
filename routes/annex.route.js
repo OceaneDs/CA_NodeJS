@@ -51,8 +51,21 @@ module.exports = function (app) {
             return;
         }
         try {
-            const annex = await AnnexController.createAnnex(name, email, street, zipCode, city, phone, associationId,horaires);
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const annex = await AnnexController.createAnnex(name, email, street, zipCode, city, phone, associationId,horaires,user);
             res.status(201).json(annex);
+        } catch (err) {
+            res.status(409).json(err);
+        }
+    });
+    /**
+     *
+     */
+    app.put("/annex/ban/:idAnnex",AuthMiddleware.isAdmin(),async (req,res)=>{
+        try {
+            const annex = await AnnexController.banAnnex(+req.params.idAnnex);
+            res.status(200).json(annex);
         } catch (err) {
             res.status(409).json(err);
         }

@@ -16,7 +16,7 @@ class AnnexController {
      * @param associationId
      * @returns {Promise<void>}
      */
-    static async createAnnex(name, email, street, zipCode, city, phone, associationId, horaire) {
+    static async createAnnex(name, email, street, zipCode, city, phone, associationId, horaire,user) {
 
         const association = await Association.findOne({
             where: {
@@ -33,6 +33,7 @@ class AnnexController {
             active: true,
         });
         await annex.setAssociation(association);
+        await annex.addUser(user);
         if (horaire) {
             for (let i = 0; i < horaire.length; i++) {
                 const day = await Day.findOne({
@@ -49,6 +50,15 @@ class AnnexController {
             }
         }
         return annex;
+    }
+
+    static async banAnnex(annexId){
+
+        const annex = await Annex.update({ active: false }, {
+            where: {
+                id: annexId
+            }
+        });
     }
 
 }
