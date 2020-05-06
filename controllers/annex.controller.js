@@ -7,6 +7,7 @@ const Role = models.Role;
 const User = models.User;
 
 
+
 class AnnexController {
 
     /**
@@ -165,7 +166,7 @@ class AnnexController {
 
             return h;
         }
-        return "Vous n'avez pas le droit créer des disponibilité pour cette Annexe"
+        return "Vous n'avez pas le droit modifier des disponibilité pour cette Annexe"
     }
 
     /**
@@ -196,8 +197,33 @@ class AnnexController {
             }
             return ;
         }
-        return "Vous n'avez pas le droit créer des disponibilité pour cette Annexe"
+        return "Vous n'avez pas le droit d'ajouter des gérant pour cette Annexe"
     }
+
+    static async removeManager(idAnnex, idUser, user) {
+        const annex = await Annex.findOne({
+            where: {
+                id: idAnnex
+            }
+        });
+        const users = await annex.getUsers();
+        const u = users.find(element => element.id === user.id);
+        const role = await user.getRole();
+        if (u || role.id === 3) {
+            const manager = await User.findOne({
+                where: {
+                    id: idUser
+                }
+            });
+            if (manager) {
+                annex.removeUser(manager);
+                return manager;
+            }
+            return ;
+        }
+        return "Vous n'avez pas le droit de supprimer pour cette Annexe"
+    }
+
 }
 
 

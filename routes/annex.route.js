@@ -120,4 +120,17 @@ module.exports = function (app) {
             console.log(err);
         }
     });
+
+    app.put("/annex/:idAnnex/removeManager/:idUser",bodyParser.json(), AuthMiddleware.isManager(), async (req, res) => {
+        try {
+            const {email} = req.body;
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const annex = await AnnexController.removeManager(+req.params.idAnnex,+req.params.idUser,user);
+            res.status(200).json(annex);
+        } catch (err) {
+            res.status(409).json(err);
+            console.log(err);
+        }
+    });
 };
