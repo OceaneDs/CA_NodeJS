@@ -4,6 +4,7 @@ const Association = models.Association;
 const AnnexAvailability = models.AnnexAvailability;
 const Day = models.Day;
 const Role = models.Role;
+const User = models.User;
 
 
 class AnnexController {
@@ -112,7 +113,7 @@ class AnnexController {
             }
         });
         const users = await annex.getUsers();
-        const u =  users.find(element => element.id === user.id);
+        const u = users.find(element => element.id === user.id);
         const role = await user.getRole();
         if (u || role.id === 3) {
             if (horaire) {
@@ -137,7 +138,7 @@ class AnnexController {
     }
 
     /**
-     * 
+     *
      * @param idAnnex
      * @param idavailability
      * @param openingTime
@@ -145,7 +146,7 @@ class AnnexController {
      * @param user
      * @returns {Promise<string|*>}
      */
-    static async updateAvailability(idAnnex,idavailability,openingTime,closingTime,user) {
+    static async updateAvailability(idAnnex, idavailability, openingTime, closingTime, user) {
 
         const annex = await Annex.findOne({
             where: {
@@ -153,10 +154,10 @@ class AnnexController {
             }
         });
         const users = await annex.getUsers();
-        const u =  users.find(element => element.id === user.id);
+        const u = users.find(element => element.id === user.id);
         const role = await user.getRole();
         if (u || role.id === 3) {
-            const h = await AnnexAvailability.update({ openingTime: openingTime,closingTime:closingTime }, {
+            const h = await AnnexAvailability.update({openingTime: openingTime, closingTime: closingTime}, {
                 where: {
                     id: idavailability
                 }
@@ -166,7 +167,39 @@ class AnnexController {
         }
         return "Vous n'avez pas le droit créer des disponibilité pour cette Annexe"
     }
+
+    /**
+     *
+     * @param idAnnex
+     * @param email
+     * @param user
+     * @returns {Promise<void>}
+     */
+    static async addManager(idAnnex, email, user) {
+        const annex = await Annex.findOne({
+            where: {
+                id: idAnnex
+            }
+        });
+        const users = await annex.getUsers();
+        const u = users.find(element => element.id === user.id);
+        const role = await user.getRole();
+        if (u || role.id === 3) {
+            const manager = await User.findOne({
+                where: {
+                    email: email
+                }
+            });
+            if (manager) {
+                annex.addUser(manager);
+                return manager;
+            }
+            return ;
+        }
+        return "Vous n'avez pas le droit créer des disponibilité pour cette Annexe"
+    }
 }
 
 
-module.exports = AnnexController;
+module
+    .exports = AnnexController;
