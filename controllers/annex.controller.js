@@ -7,7 +7,6 @@ const Role = models.Role;
 const User = models.User;
 
 
-
 class AnnexController {
 
     /**
@@ -69,6 +68,7 @@ class AnnexController {
                 id: annexId
             }
         });
+        return annex;
     }
 
     /**
@@ -195,7 +195,7 @@ class AnnexController {
                 annex.addUser(manager);
                 return manager;
             }
-            return ;
+            return;
         }
         return "Vous n'avez pas le droit d'ajouter des gérant pour cette Annexe"
     }
@@ -219,7 +219,7 @@ class AnnexController {
                 annex.removeUser(manager);
                 return manager;
             }
-            return ;
+            return;
         }
         return "Vous n'avez pas le droit de supprimer pour cette Annexe"
     }

@@ -61,7 +61,7 @@ module.exports = function (app) {
     /**
      *
      */
-    app.put("/annex/ban/:idAnnex",AuthMiddleware.isAdmin(),async (req,res)=>{
+    app.get("/annex/ban/:idAnnex", AuthMiddleware.isAdmin(), async (req,res)=>{
         try {
             const annex = await AnnexController.banAnnex(+req.params.idAnnex);
             res.status(200).json(annex);

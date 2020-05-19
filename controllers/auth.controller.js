@@ -96,7 +96,9 @@ class AuthController {
                 }
             }
         }
-        return "L' email ou le mot de passe est incorrect";
+        return {
+            message:"L' email ou le mot de passe est incorrect"
+        };
     }
 }
 
