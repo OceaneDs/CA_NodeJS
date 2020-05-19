@@ -133,4 +133,15 @@ module.exports = function (app) {
             console.log(err);
         }
     });
+
+    app.get('/annex/myannexes',AuthMiddleware.auth(), async (req, res) => {
+        try {
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const annex = await AnnexController.getMyAnnexes(user);
+            res.status(201).json(annex);
+        } catch (err) {
+            res.status(409).json(err);
+        }
+    });
 };

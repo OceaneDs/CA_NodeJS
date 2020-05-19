@@ -224,8 +224,12 @@ class AnnexController {
         return "Vous n'avez pas le droit de supprimer pour cette Annexe"
     }
 
+    static async getMyAnnexes(user) {
+        const annexList = await user.getAnnexes();
+        return annexList.filter(annex => annex.active)
+    }
+
 }
 
 
-module
-    .exports = AnnexController;
+module.exports = AnnexController;
