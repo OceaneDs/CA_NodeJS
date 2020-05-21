@@ -230,16 +230,16 @@ class AnnexController {
     }
 
     /**
-     * 
+     *
      * @param id
      * @returns {Promise<any>}
      */
     static async getAnnexByAId(id) {
         let annex = await Annex.findOne({
-         include: [{
-             model:AnnexAvailability,
-             include:Day
-         },User],
+            include: [{
+                model: AnnexAvailability,
+                include: Day
+            }, User],
             where: {
                 id: id,
                 valid: true,
@@ -248,6 +248,31 @@ class AnnexController {
         });
         return annex;
     }
+
+    /**
+     *
+     * @param user
+     * @param id
+     * @returns {Promise<void>}
+     */
+    static async reportAnnex(user, id) {
+        let annex = await Annex.findOne({
+            where: {
+                id: id,
+            }
+        });
+        if (annex) {
+            user.addAnnex(annex, {
+                through: 'report'
+            });
+            user.save();
+            return "Vous venez reporter l'annexe " + annex.name;
+        }
+        return "Vous ne pouvez pas reporter l'annexe ";
+
+    }
+
+
 }
 
 

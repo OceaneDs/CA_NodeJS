@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         Annex.belongsTo(models.Association);
         Annex.hasMany(models.AnnexAvailability);
         Annex.belongsToMany(models.User, { through: 'manager' });
+        Annex.belongsToMany(models.User, { through: 'report' });
 
     };
     return Annex;

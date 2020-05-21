@@ -161,6 +161,29 @@ module.exports = function (app) {
             res.status(409).json(err);
         }
     });
+    /**
+     *
+     */
+    app.get("/annex/getannex/:id", async (req, res) => {
+        try {
+            const annex = await AnnexController.getAnnexByAId(req.params.id);
+            res.status(200).json(annex);
+        } catch (e) {
+            console.log(e)
+            res.status(400).json(e)
+        }
+    });
 
+    app.get('/annex/report/:id', AuthMiddleware.auth(), async (req, res) => {
+        try {
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const annex = await AnnexController.reportAnnex(user, req.params.id);
+            res.status(201).json(annex);
+        } catch (err) {
+            console.log(err)
+            res.status(409).json(err);
+        }
+    });
 
 };
