@@ -229,6 +229,25 @@ class AnnexController {
         return annexList.filter(annex => annex.active)
     }
 
+    /**
+     * 
+     * @param id
+     * @returns {Promise<any>}
+     */
+    static async getAnnexByAId(id) {
+        let annex = await Annex.findOne({
+         include: [{
+             model:AnnexAvailability,
+             include:Day
+         },User],
+            where: {
+                id: id,
+                valid: true,
+                active: true
+            }
+        });
+        return annex;
+    }
 }
 
 
