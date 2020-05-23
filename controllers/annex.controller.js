@@ -5,6 +5,7 @@ const AnnexAvailability = models.AnnexAvailability;
 const Day = models.Day;
 const Role = models.Role;
 const User = models.User;
+const Report = models.Report;
 
 
 class AnnexController {
@@ -262,10 +263,11 @@ class AnnexController {
             }
         });
         if (annex) {
-            user.addAnnex(annex, {
-                through: 'report'
+            const report = await Report.create({
+               reporter:"user"
             });
-            user.save();
+            report.setAnnex(annex);
+            report.setUser(user);
             return "Vous venez reporter l'annexe " + annex.name;
         }
         return "Vous ne pouvez pas reporter l'annexe ";

@@ -15,11 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         active: DataTypes.BOOLEAN,
         valid: DataTypes.BOOLEAN,
     }, {});
-    Annex.associate = function(models) {
+    Annex.associate = function (models) {
         Annex.belongsTo(models.Association);
         Annex.hasMany(models.AnnexAvailability);
-        Annex.belongsToMany(models.User, { through: 'manager' });
-        Annex.belongsToMany(models.User, { through: 'report' });
+        Annex.belongsToMany(models.User, {through: 'manager'});
 
     };
     return Annex;
