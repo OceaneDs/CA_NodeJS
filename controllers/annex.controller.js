@@ -254,7 +254,7 @@ class AnnexController {
      *
      * @param user
      * @param id
-     * @returns {Promise<void>}
+     * @returns {Promise<string>}
      */
     static async reportAnnex(user, id) {
         let annex = await Annex.findOne({
@@ -263,8 +263,16 @@ class AnnexController {
             }
         });
         if (annex) {
+            const reportExist = await Report.findOne({
+                reporter: "user",
+                annex: annex,
+                user: user
+            });
+            if (reportExist) {
+                return "Vous avez déjà reporter " + annex.name;
+            }
             const report = await Report.create({
-               reporter:"user"
+                reporter: "user"
             });
             report.setAnnex(annex);
             report.setUser(user);

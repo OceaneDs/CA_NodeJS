@@ -27,4 +27,15 @@ module.exports = function (app) {
             res.status(409).json(err);
         }
     });
+
+    app.get('/user/report/:idUser/:idAnnex', AuthMiddleware.isManager(), async (req, res) => {
+        try {
+            const authorization = req.headers['authorization'];
+            const response = await UserController.reportUser(req.params.idAnnex, req.params.idUser);
+            res.status(201).json(response);
+        } catch (err) {
+            console.log(err)
+            res.status(409).json(err);
+        }
+    });
 };
