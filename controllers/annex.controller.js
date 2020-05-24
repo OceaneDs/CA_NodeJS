@@ -193,6 +193,8 @@ class AnnexController {
                 }
             });
             if (manager) {
+                await manager.setRole(role);
+                await manager.save();
                 annex.addUser(manager);
                 return manager;
             }

@@ -51,6 +51,14 @@ class VerificationHelper {
         return true;
     }
 
+    static async userFromId(id) {
+        return User.findOne({
+            where: {
+                id: id
+            }
+        });
+    }
+
     static async userFromEmail(email) {
         return User.findOne({
             where: {

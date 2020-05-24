@@ -2,6 +2,7 @@ const models = require('../models');
 const User = models.User;
 const Annex = models.Annex;
 const Report = models.Report;
+const Role = models.Role;
 
 class UserController {
 
@@ -61,6 +62,31 @@ class UserController {
             return "Vous venez de reporter l'utilisateur " + user.firstname + " " + user.lastname;
         }
         return "Vous ne pouvez pas reporter l'utilisateur ";
+    }
+
+    static async updateUser(login, firstname, email, lastname, street, zipCode, city, phone, roleId, birthdate, link, idUser) {
+        const role = await Role.findOne({
+            where: {
+                id: roleId
+            }
+        });
+        let image = null;
+        if (link !== undefined) {
+            image = await Image.create({
+                link: link
+            });
+        }
+        ;
+        const user = await User.update({
+            login: login, firstname: firstname, email: email,
+            lastname: lastname, street: street, zipCode: street, city: city,
+            phone: phone, birthdate: birthdate,ImageId:image, RoleId: role.id,
+        }, {
+            where: {
+                id: idUser
+            }
+        });
+        return user;
     }
 }
 

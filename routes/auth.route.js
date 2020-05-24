@@ -22,7 +22,7 @@ module.exports = function (app) {
         }
      */
     app.post('/auth/subscribe', bodyParser.json(), async (req, res) => {
-        const {login, firstname, email, lastname, password, passwordConfirm, street, zipCode, city, phone, roleId, birthdate} = req.body;
+        let {login, firstname, email, lastname, password, passwordConfirm, street, zipCode, city, phone, roleId, birthdate} = req.body;
         const allRequireParams = Verification.allRequiredParam(login, birthdate, firstname, email, lastname, password, passwordConfirm, street, zipCode, city, phone, roleId, res);
         if (!allRequireParams) {
             return;
@@ -50,6 +50,8 @@ module.exports = function (app) {
             await pieceIdentity.mv(process.env.uploadFile + pieceIdentity.name);
             link = process.env.uploadFile + pieceIdentity.name;
 
+        } else {
+            roleId = 1;
         }
         try {
             const user = await AuthController.subscribe(login, firstname, email, lastname, password, street, zipCode, city, phone, roleId, birthdate, link);
