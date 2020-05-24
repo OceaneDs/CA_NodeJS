@@ -186,4 +186,21 @@ module.exports = function (app) {
         }
     });
 
+    app.put('/annex/update/:id', AuthMiddleware.isManager(), async (req, res) => {
+        const {name, email, street, zipCode, city, phone} = req.body;
+        const allRequireParams = Verification.allRequiredParam(name, email, street, zipCode, city, phone, res);
+        if (!allRequireParams) {
+            return;
+        }
+        try {
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const annex = await AnnexController.updateAnnex(name, email, street, zipCode, city, phone, user, req.params.id);
+            res.status(201).json(annex);
+        } catch (err) {
+            console.log(err)
+            res.status(409).json(err);
+        }
+    });
+
 };

@@ -284,6 +284,32 @@ class AnnexController {
 
     }
 
+    static async updateAnnex(name, email, street, zipCode, city, phone, user, id) {
+        let annex = await Annex.findOne({
+            where: {
+                id: id,
+            }
+        });
+        const userManageers = await annex.getUsers();
+        const response = userManageers.find(element => element.id === user.id);
+        if (response) {
+            const annexUpdate = Annex.update({
+                name: name,
+                email: email,
+                street: street,
+                zipCode: zipCode,
+                city: city,
+                phone: phone
+            }, {
+                where: {
+                    id: id,
+                }
+            });
+            return annexUpdate;
+        }
+        return "Vous n'êtes pas manager de cette annexe"
+    }
+
 
 }
 

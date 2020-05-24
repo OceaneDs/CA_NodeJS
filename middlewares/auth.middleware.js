@@ -54,7 +54,7 @@ class AuthMiddleware {
                 return;
             }
             const role = await user.getRole();
-            if (role.name !== "Gerant"){
+            if (role.name !== "Gerant" || role.name !== "Administrateur"){
                 res.status(403).json("Vous n'avez pas le droit pour effectuer cette action");
                 return;
             }
