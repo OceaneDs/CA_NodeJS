@@ -69,16 +69,36 @@ class AssociationController {
             }
         });
         const annexes = await Annex.findAll({
-            where:{
-                associationId:associationId
+            where: {
+                associationId: associationId
             }
         });
         for (const annex of annexes) {
-             annex.active = false;
-             await annex.save();
+            annex.active = false;
+            await annex.save();
         }
         return association;
     }
+
+    /**
+     *
+     * @param name
+     * @param description
+     * @param city
+     * @param number
+     * @returns {Promise<void>}
+     */
+    static async updateAssociation(name, description, city, IdAssociation) {
+        const association = await Association.update({
+            name: name, description: description, city: city
+        }, {
+            where: {
+                id: IdAssociation
+            }
+        });
+        return association;
+    }
+
 }
 
 

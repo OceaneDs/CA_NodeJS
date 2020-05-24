@@ -91,8 +91,6 @@ module.exports = function (app) {
                     roleId = 1;
                 }
             }
-
-            console.log(roleId)
             const response = await UserController.updateUser(login, firstname, email, lastname, street, zipCode, city, phone, roleId, birthdate, link, req.params.idUser);
             res.status(200).json(response);
         } catch (err) {
