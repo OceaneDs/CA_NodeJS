@@ -1,4 +1,5 @@
 const models = require('../models');
+const MailService = require('../service/mail.service');
 const Annex = models.Annex;
 const Association = models.Association;
 const AnnexAvailability = models.AnnexAvailability;
@@ -69,6 +70,12 @@ class AnnexController {
                 id: annexId
             }
         });
+        const a = Annex.findOne({
+            where:{
+                id:annex
+            }
+        });
+        await MailService.sendMail(a.email,"annex");
         return annex;
     }
 

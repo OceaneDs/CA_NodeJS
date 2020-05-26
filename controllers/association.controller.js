@@ -5,6 +5,7 @@ const AnnexAvailability = models.AnnexAvailability;
 const Day = models.Day;
 const Role = models.Role;
 const User = models.User;
+const MailService = require('../service/mail.service');
 
 
 class AssociationController {
@@ -74,6 +75,7 @@ class AssociationController {
             }
         });
         for (const annex of annexes) {
+            await MailService.sendMail(annex.email, "annex")
             annex.active = false;
             await annex.save();
         }

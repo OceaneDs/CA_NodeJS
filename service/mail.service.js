@@ -27,7 +27,7 @@ class MailService {
         }
         const mailOptions = {
             from: 'no-reply@message.com',
-            to: "fnestan@myges.fr", //email,//user.email,
+            to: email,//user.email,
             subject: 'Bannissement',
             text: text
         };
