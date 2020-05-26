@@ -3,6 +3,7 @@ const User = models.User;
 const Annex = models.Annex;
 const Report = models.Report;
 const Role = models.Role;
+const MailService = require('../service/mail.service');
 
 class UserController {
 
@@ -18,6 +19,12 @@ class UserController {
                 id: userId
             }
         });
+        const u = await User.findOne({
+            where: {
+                id: userId
+            }
+        });
+        await MailService.sendMail(u.email, 'user');
     }
 
     /**
