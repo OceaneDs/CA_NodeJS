@@ -75,7 +75,7 @@ class AssociationController {
             }
         });
         for (const annex of annexes) {
-            await MailService.sendMail(annex.email, "annex")
+            await MailService.sendMail(annex.email, "annex");
             annex.active = false;
             await annex.save();
         }
