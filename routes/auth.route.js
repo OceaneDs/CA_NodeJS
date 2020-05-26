@@ -39,22 +39,17 @@ module.exports = function (app) {
         if (!passwordConfirmationIsGoog) {
             return;
         }
-        let pieceIdentity;
-        let link;
-        if (roleId == 2) {
-            if (req.files == null) {
-                res.status(400).json("Veuillez uploader une piece d'identité");
-                return;
-            }
-            pieceIdentity = req.files.pieceIdentite;
-            await pieceIdentity.mv(process.env.uploadFile + pieceIdentity.name);
-            link = process.env.uploadFile + pieceIdentity.name;
 
-        } else {
-            roleId = 1;
+        if (roleId === 3 || roleId === 4) {
+            res.status(400).json("vous ne pouvez pas choisir un de ces rôle")
+            return;
+        }
+        if (roleId > 4) {
+            res.status(400).json("Ce rôle n'existe pas")
+            return;
         }
         try {
-            const user = await AuthController.subscribe(login, firstname, email, lastname, password, street, zipCode, city, phone, roleId, birthdate, link);
+            const user = await AuthController.subscribe(login, firstname, email, lastname, password, street, zipCode, city, phone, roleId, birthdate);
             res.status(201).json(user);
         } catch (err) {
             res.status(409).json(err);

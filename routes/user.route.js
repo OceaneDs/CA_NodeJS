@@ -22,7 +22,7 @@ module.exports = function (app) {
      */
     app.put("/user/validate/:idUser", AuthMiddleware.isAdmin(), async (req, res) => {
         try {
-            const annex = await UserController.validateUser(+req.params.idUser);
+            const annex = await UserController.validateUser(+req.params.idUser, req.body.valide);
             res.status(200).json(annex);
         } catch (err) {
             res.status(409).json(err);
@@ -70,28 +70,34 @@ module.exports = function (app) {
                     return;
                 }
             }
-            let link;
-            if (userfromId.RoleId === 1 && roleId === 2) {
-                let pieceIdentity;
-                if (req.files == null) {
-                    res.status(400).json("Veuillez uploader une piece d'identité");
+            let validForVolunteer = null;
+            if (userfromId.RoleId == 1 && roleId == 2) {
+                if (userfromId.validForVolunteer === "REFUSE") {
+                    res.status(400).json("Vous ne pouvez pas être bénévole");
                     return;
                 }
-                pieceIdentity = req.files.pieceIdentite;
-                await pieceIdentity.mv(process.env.uploadFile + pieceIdentity.name);
-                link = process.env.uploadFile + pieceIdentity.name;
-            } else if (userfromId.RoleId === 2 && roleId !== 1 || roleId === 2) {
-                roleId = userfromId.RoleId;
+                if (userfromId.validForVolunteer === "ATTENTE") {
+                    res.status(400).json("Votre validation est en attente");
+                    return;
+                }
+                roleId = roleId;
+                validForVolunteer = "ATTENTE";
             } else {
-                if (userFromTOken.RoleId === 3) {
+                if (userfromId.RoleId == 2 && roleId !== 1 || roleId === 2) {
+                    roleId = userfromId.RoleId;
+                }
+                if (userFromTOken.RoleId == 3) {
                     roleId = roleId;
-                } else if (userfromId.RoleId === 4) {
+                }
+                if (userfromId.RoleId == 4) {
                     roleId = 4;
                 } else {
                     roleId = 1;
                 }
+                validForVolunteer = userfromId.validForVolunteer
             }
-            const response = await UserController.updateUser(login, firstname, email, lastname, street, zipCode, city, phone, roleId, birthdate, link, req.params.idUser);
+
+            const response = await UserController.updateUser(validForVolunteer, login, firstname, email, lastname, street, zipCode, city, phone, roleId, birthdate, req.params.idUser);
             res.status(200).json(response);
         } catch (err) {
             res.status(409).json(err);

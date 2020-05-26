@@ -23,15 +23,20 @@ class UserController {
     /**
      *
      * @param userId
+     * @param response
      * @returns {Promise<void>}
      */
-    static async validateUser(userId) {
-
-        const user = await User.update({validForVolunteer: true}, {
+    static async validateUser(userId, response) {
+        let RoleId = 2;
+        if (response === "REFUSE") {
+            RoleId = 1
+        }
+        const user = await User.update({validForVolunteer: response, RoleId: RoleId}, {
             where: {
                 id: userId
             }
         });
+        return user;
     }
 
     static async reportUser(idAnnex, idUser) {
@@ -64,23 +69,16 @@ class UserController {
         return "Vous ne pouvez pas reporter l'utilisateur ";
     }
 
-    static async updateUser(login, firstname, email, lastname, street, zipCode, city, phone, roleId, birthdate, link, idUser) {
+    static async updateUser(validForVolunteer, login, firstname, email, lastname, street, zipCode, city, phone, roleId, birthdate, idUser) {
         const role = await Role.findOne({
             where: {
                 id: roleId
             }
         });
-        let image = null;
-        if (link !== undefined) {
-            image = await Image.create({
-                link: link
-            });
-        }
-        ;
         const user = await User.update({
             login: login, firstname: firstname, email: email,
             lastname: lastname, street: street, zipCode: street, city: city,
-            phone: phone, birthdate: birthdate,ImageId:image, RoleId: role.id,
+            phone: phone, birthdate: birthdate, validForVolunteer: validForVolunteer, RoleId: role.id,
         }, {
             where: {
                 id: idUser

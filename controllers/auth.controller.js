@@ -19,27 +19,18 @@ class AuthController {
      * @param phone
      * @param roleId
      * @param birthdate
-     * @param imageLink
      * @returns {Promise<User>}
      */
-    static async subscribe(login, firstname, email, lastname, password, street, zipCode, city, phone, roleId, birthdate, imageLink) {
+    static async subscribe(login, firstname, email, lastname, password, street, zipCode, city, phone, roleId, birthdate) {
 
         const role = await Role.findOne({
             where: {
-                id: 1
+                id: roleId
             }
         });
-
-        let image = null;
-        if (imageLink != undefined) {
-            image = await Image.create({
-                link: imageLink
-            });
-        }
-        ;
         let validForVolunteer = null;
-        if (roleId == 2) {
-            validForVolunteer = false;
+        if (role.id === 2) {
+            validForVolunteer = "ATTENTE";
         }
         const user = await User.create({
             login,
@@ -55,9 +46,6 @@ class AuthController {
             birthdate: birthdate,
             validForVolunteer: validForVolunteer
         });
-        if (image != null) {
-            await user.setImage(image);
-        }
         await user.setRole(role);
         return user;
     }
@@ -97,7 +85,7 @@ class AuthController {
             }
         }
         return {
-            message:"L' email ou le mot de passe est incorrect"
+            message: "L' email ou le mot de passe est incorrect"
         };
     }
 }
