@@ -7,6 +7,7 @@ const Day = models.Day;
 const Role = models.Role;
 const User = models.User;
 const Report = models.Report;
+const Service = models.Service;
 
 
 class AnnexController {
@@ -289,6 +290,32 @@ class AnnexController {
         }
         return "Vous ne pouvez pas reporter l'annexe ";
 
+    }
+
+    /**
+     *
+     * @param nom
+     * @param date_service
+     * @param description
+     * @param quantite
+     * @param status
+     * @param actif
+     * @param idAnnex
+     * @returns {Promise<void>}
+     */
+    static async createService(idAnnex, nom, date_service, description, quantite, status, actif) {
+
+        console.log(date_service);
+            const newService = await Service.create({
+                nom: nom,
+                date_service: date_service,
+                description: description,
+                quantite: quantite,
+                status: status,
+                actif: actif
+            });
+            newService.setAnnex(idAnnex);
+            return newService;
     }
 
     static async updateAnnex(name, email, street, zipCode, city, phone, user, id) {

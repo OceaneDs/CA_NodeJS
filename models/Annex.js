@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     Annex.associate = function (models) {
         Annex.belongsTo(models.Association);
         Annex.hasMany(models.AnnexAvailability);
+        Annex.hasMany(models.Service);
         Annex.belongsToMany(models.User, {through: 'manager'});
         Annex.belongsToMany(models.Image, {through: 'annexImage'});
 
