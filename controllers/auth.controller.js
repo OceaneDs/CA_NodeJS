@@ -80,7 +80,7 @@ class AuthController {
                 if (userFound.active) {
                     return await userFound.save();
                 } else if (!userFound.active) {
-                    return "Vous avez été banni";
+                    return await userFound.save();
                 }
             }
         }

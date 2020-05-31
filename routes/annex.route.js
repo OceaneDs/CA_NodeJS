@@ -127,6 +127,7 @@ module.exports = function (app) {
         try {
             const {email} = req.body;
             const authorization = req.headers['authorization'];
+            console.log(authorization)
             const user = await Verification.userFromToken(authorization.split(" ")[1]);
             const annex = await AnnexController.addManager(+req.params.idAnnex, email, user);
             res.status(200).json(annex);
@@ -161,19 +162,6 @@ module.exports = function (app) {
             res.status(409).json(err);
         }
     });
-    /**
-     *
-     */
-    app.get("/annex/getannex/:id", async (req, res) => {
-        try {
-            const annex = await AnnexController.getAnnexByAId(req.params.id);
-            res.status(200).json(annex);
-        } catch (e) {
-            console.log(e)
-            res.status(400).json(e)
-        }
-    });
-
     app.get('/annex/report/:id', AuthMiddleware.auth(), async (req, res) => {
         try {
             const authorization = req.headers['authorization'];

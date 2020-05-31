@@ -203,9 +203,9 @@ class AnnexController {
                 await manager.setRole(role);
                 await manager.save();
                 annex.addUser(manager);
-                return manager;
+                return "Le manager à bien été ajouter";
             }
-            return;
+            return "Cet utilisateur n'existe pas";
         }
         return "Vous n'avez pas le droit d'ajouter des gérant pour cette Annexe"
     }
