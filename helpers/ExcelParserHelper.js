@@ -9,8 +9,8 @@ class ExcelParserHelper {
         for(let i = 1; i < data.length; i++){
             const assoc = await Association.create({
                 name:data[i][0],
-               // description:data[i][2],
-                description:" Pour l'instant la valeur est trop long on vverra comment faire après",
+                description:data[i][2],
+                //description:" Pour l'instant la valeur est trop long on vverra comment faire après",
                 city:data[i][4],
                 active:true
             });

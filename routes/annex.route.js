@@ -186,4 +186,18 @@ module.exports = function (app) {
         }
     });
 
+    app.post("/annex/service/:idAnnex", bodyParser.json(), AuthMiddleware.isManager(), async (req, res) => {
+        try {
+            console.log(req.body);
+            const service = await AnnexController.createService(req.params.idAnnex, req.body.nom, req.body.date_service, req.body.description,
+                req.body.quantite, req.body.status, req.body.actif);
+            res.status(201).json(service);
+        } catch (err) {
+            res.status(409).json(err);
+            console.log(err);
+        }
+    });
+
+
+
 };
