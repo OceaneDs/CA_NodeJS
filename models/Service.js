@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {});
     Service.associate = function (models) {
         Service.belongsTo(models.Annex);
-        Service.hasMany(models.User);
+        Service.belongsToMany(models.User, {through: 'repondre'});
     };
     return Service;
 };
