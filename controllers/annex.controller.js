@@ -286,7 +286,6 @@ class AnnexController {
      */
     static async createService(idAnnex, nom, date_service, description, quantite) {
 
-        console.log(date_service);
             const newService = await Service.create({
                 nom: nom,
                 date_service: date_service,
@@ -297,6 +296,18 @@ class AnnexController {
             });
             newService.setAnnex(idAnnex);
             return newService;
+    }
+
+    /**
+    * @param idService
+    * @returns {Promise<void>}
+    */
+    static async completeService(idService){
+        return await Service.update({status: true}, {
+            where: {
+                id: idService
+            }
+        });
     }
 
 
