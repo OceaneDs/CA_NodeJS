@@ -303,7 +303,6 @@ class AnnexController {
      */
     static async createService(idAnnex, nom, date_service, description, quantite) {
 
-        console.log(date_service);
             const newService = await Service.create({
                 nom: nom,
                 date_service: date_service,
@@ -316,6 +315,30 @@ class AnnexController {
             return newService;
     }
 
+    /**
+    * @param idService
+    * @returns {Promise<void>}
+    */
+    static async completeService(idService){
+        return await Service.update({status: true}, {
+            where: {
+                id: idService
+            }
+        });
+    }
+
+    /**
+     * @param idService
+     * @returns {Promise<void>}
+     */
+    static async deleteService(idService){
+        const service =  await Service.update({actif: false}, {
+            where: {
+                id: idService
+            }
+        });
+        return service
+    }
     static async updateAnnex(name, email, street, zipCode, city, phone, user, id) {
         let annex = await Annex.findOne({
             where: {
