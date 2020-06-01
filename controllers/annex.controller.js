@@ -336,6 +336,8 @@ class AnnexController {
         });
         return service
     }
+
+
     static async updateAnnex(name, email, street, zipCode, city, phone, user, id) {
         let annex = await Annex.findOne({
             where: {
