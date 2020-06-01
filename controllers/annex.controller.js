@@ -71,12 +71,6 @@ class AnnexController {
                 id: annexId
             }
         });
-        const a = Annex.findOne({
-            where:{
-                id:annex
-            }
-        });
-        await MailService.sendMail(a.email,"annex");
         return annex;
     }
 
@@ -203,7 +197,7 @@ class AnnexController {
             if (manager) {
                 await manager.setRole(role);
                 await manager.save();
-                annex.addUser(manager);
+                await annex.addUser(manager);
                 return "Le manager à bien été ajouter";
             }
             return "Cet utilisateur n'existe pas";
@@ -236,7 +230,9 @@ class AnnexController {
     }
 
     static async getMyAnnexes(user) {
+
         const annexList = await user.getAnnexes();
+        console.log(annexList);
         return annexList.filter(annex => annex.active)
     }
 
@@ -303,6 +299,7 @@ class AnnexController {
      */
     static async createService(idAnnex, nom, date_service, description, quantite) {
 
+        console.log(date_service);
             const newService = await Service.create({
                 nom: nom,
                 date_service: date_service,
