@@ -310,6 +310,18 @@ class AnnexController {
         });
     }
 
+    /**
+     * @param idService
+     * @returns {Promise<void>}
+     */
+    static async deleteService(idService){
+        const service =  await Service.update({actif: false}, {
+            where: {
+                id: idService
+            }
+        });
+        return service
+    }
 
 }
 
