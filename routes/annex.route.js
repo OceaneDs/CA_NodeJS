@@ -137,9 +137,8 @@ module.exports = function (app) {
         }
     });
 
-    app.put("/annex/:idAnnex/removeManager/:idUser", bodyParser.json(), AuthMiddleware.isManager(), async (req, res) => {
+    app.get("/annex/:idAnnex/removeManager/:idUser", bodyParser.json(), AuthMiddleware.isManager(), async (req, res) => {
         try {
-            const {email} = req.body;
             const authorization = req.headers['authorization'];
             const user = await Verification.userFromToken(authorization.split(" ")[1]);
             const annex = await AnnexController.removeManager(+req.params.idAnnex, +req.params.idUser, user);
@@ -193,7 +192,6 @@ module.exports = function (app) {
 
     app.post("/annex/service/:idAnnex", bodyParser.json(), AuthMiddleware.isManager(), async (req, res) => {
         try {
-            console.log(req.body);
             const service = await AnnexController.createService(req.params.idAnnex, req.body.nom, req.body.date_service, req.body.description,
                 req.body.quantite, req.body.status, req.body.actif);
             res.status(201).json(service);

@@ -228,9 +228,9 @@ class AnnexController {
             });
             if (manager) {
                 annex.removeUser(manager);
-                return manager;
+                return "Le manager à bien été supprimer";
             }
-            return;
+            return "Cet utilisateur n'existe pas";
         }
         return "Vous n'avez pas le droit de supprimer pour cette Annexe"
     }
