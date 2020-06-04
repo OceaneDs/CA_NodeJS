@@ -3,4 +3,5 @@ module.exports = function () {
     require('./annex.route')(...arguments);
     require('./user.route')(...arguments);
     require('./association.route')(...arguments);
+    require('./search.route')(...arguments);
 };
