@@ -5,11 +5,13 @@ const Product = models.Product;
 class ProductController {
 
     /**
+     * @param id
      * @param name
      * @returns {Promise<Product>}
      */
-    static create(name) {
+    static create(id, name) {
         return Product.create({
+            TypeId: id,
             name
         });
     }

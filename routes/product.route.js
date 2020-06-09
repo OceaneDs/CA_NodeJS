@@ -1,5 +1,7 @@
 const bodyParser = require('body-parser');
 const ProductController = require('../controllers').ProductController;
+const AuthMiddleware = require('../middlewares/auth.middleware');
+
 
 module.exports = function (app) {
 
@@ -8,10 +10,10 @@ module.exports = function (app) {
     });
 
     // create a product
-    app.post('/product/create', bodyParser.json(), async (req, res) => {
-        if(req.body.name) {
+    app.post('/product/create', AuthMiddleware.isManager(), bodyParser.json(), async (req, res) => {
+        if(req.body.name && req.body.id) {
             try  {
-                const product = await ProductController.create(req.body.name);
+                const product = await ProductController.create(req.body.id, req.body.name);
                 res.status(201).json(product);
             } catch(err) {
                 res.status(409).end();
@@ -29,9 +31,4 @@ module.exports = function (app) {
             res.status(409).json(err);
         }
     });
-
-// get all product
-    app.get('/api/product', (req, res) => {
-        Product.findAll().then(product => res.json(product))
-    })
 };
