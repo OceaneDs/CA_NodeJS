@@ -105,12 +105,12 @@ module.exports = function (app) {
         }
     });
 
-    app.post("/user/:idUser/answer/service/:idService", AuthMiddleware.auth(), async(req, res) =>{
+    app.post("/user/:idUser/answer/service/:idService", AuthMiddleware.isVolunteer(), async(req, res) =>{
         try {
             const service = await UserController.answerService(req.params.idUser, req.params.idService);
             res.status(201).json(service);
         } catch (err) {
-            console.log(err)
+            console.log(err);
             res.status(409).json(err);
         }
     });
