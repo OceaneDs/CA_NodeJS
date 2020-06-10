@@ -4,4 +4,6 @@ module.exports = function () {
     require('./user.route')(...arguments);
     require('./association.route')(...arguments);
     require('./search.route')(...arguments);
+    require('./product.route')(...arguments);
+    require('./type.route')(...arguments);
 };
