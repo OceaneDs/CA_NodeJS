@@ -11,9 +11,9 @@ module.exports = function (app) {
 
     // create a product
     app.post('/product/create', AuthMiddleware.isManager(), bodyParser.json(), async (req, res) => {
-        if(req.body.name && req.body.id) {
+        if(req.body.name && req.body.typeId) {
             try  {
-                const product = await ProductController.create(req.body.id, req.body.name);
+                const product = await ProductController.create(req.body.typeId, req.body.name);
                 res.status(201).json(product);
             } catch(err) {
                 res.status(409).end();
