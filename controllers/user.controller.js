@@ -15,7 +15,7 @@ class UserController {
      */
     static async banUser(userId) {
 
-        const user = await User.update({active: false}, {
+        const user = await User.update({active: false , validForVolunteer:"REFUSE", validForUser:"REFUSE"}, {
             where: {
                 id: userId
             }
@@ -57,6 +57,7 @@ class UserController {
                 id: userId
             }
         });
+        this.banUser()
         return user;
     }
 
@@ -131,7 +132,9 @@ class UserController {
     }
 
     static async getAllUsers() {
-        return User.findAll();
+        return User.findAll({
+            include:Role
+        });
     }
 }
 

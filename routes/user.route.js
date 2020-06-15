@@ -8,10 +8,10 @@ module.exports = function (app) {
     /**
      *
      */
-    app.put("/user/ban/:idUser", async (req, res) => {
+    app.get("/user/ban/:idUser", AuthMiddleware.isAdmin(),async (req, res) => {
         try {
-            const annex = await UserController.banUser(+req.params.idUser);
-            res.status(200).json(annex);
+            const user = await UserController.banUser(+req.params.idUser);
+            res.status(200).json(user);
         } catch (err) {
             console.log(err)
             res.status(409).json(err);
@@ -23,8 +23,8 @@ module.exports = function (app) {
      */
     app.put("/user/validateVolunter/:idUser", AuthMiddleware.isAdmin(), async (req, res) => {
         try {
-            const annex = await UserController.validateVolunteer(+req.params.idUser, req.body.valide);
-            res.status(200).json(annex);
+            const user = await UserController.validateVolunteer(+req.params.idUser, req.body.valide);
+            res.status(200).json(user);
         } catch (err) {
             res.status(409).json(err);
         }
@@ -35,8 +35,8 @@ module.exports = function (app) {
      */
     app.put("/user/validateUser/:idUser", AuthMiddleware.isAdmin(), async (req, res) => {
         try {
-            const annex = await UserController.validateUser(+req.params.idUser, req.body.valide);
-            res.status(200).json(annex);
+            const user = await UserController.validateUser(+req.params.idUser, req.body.valide);
+            res.status(200).json(user);
         } catch (err) {
             res.status(409).json(err);
         }
@@ -127,7 +127,7 @@ module.exports = function (app) {
         }
     });
 
-    app.get("/user/get/all", AuthMiddleware.isManager(), async(req, res) =>{
+    app.get("/user/get/all", AuthMiddleware.isAdmin(), async(req, res) =>{
         try {
             const users = await UserController.getAllUsers();
             res.status(201).json(users);
