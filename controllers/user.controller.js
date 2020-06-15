@@ -34,12 +34,25 @@ class UserController {
      * @param response
      * @returns {Promise<void>}
      */
-    static async validateUser(userId, response) {
+    static async validateVolunteer(userId, response) {
         let RoleId = 2;
         if (response === "REFUSE") {
             RoleId = 1
         }
         const user = await User.update({validForVolunteer: response, RoleId: RoleId}, {
+            where: {
+                id: userId
+            }
+        });
+        return user;
+    }
+
+    static async validateUser(userId, response) {
+        let active = true;
+        if (response === "REFUSE") {
+            active = false;
+        }
+        const user = await User.update({validateUser: response, active: active}, {
             where: {
                 id: userId
             }
@@ -101,9 +114,9 @@ class UserController {
      * @param idService
      * @returns {Promise<void>}
      */
-    static async answerService(idUser, idService){
+    static async answerService(idUser, idService) {
         const service = await Service.findOne({
-            where:{
+            where: {
                 id: idService
             }
         });
@@ -115,6 +128,10 @@ class UserController {
 
         service.addUser(user);
         return service;
+    }
+
+    static async getAllUsers() {
+        return User.findAll();
     }
 }
 

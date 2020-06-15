@@ -21,7 +21,19 @@ module.exports = function (app) {
     /**
      *
      */
-    app.put("/user/validate/:idUser", AuthMiddleware.isAdmin(), async (req, res) => {
+    app.put("/user/validateVolunter/:idUser", AuthMiddleware.isAdmin(), async (req, res) => {
+        try {
+            const annex = await UserController.validateVolunteer(+req.params.idUser, req.body.valide);
+            res.status(200).json(annex);
+        } catch (err) {
+            res.status(409).json(err);
+        }
+    });
+
+    /**
+     *
+     */
+    app.put("/user/validateUser/:idUser", AuthMiddleware.isAdmin(), async (req, res) => {
         try {
             const annex = await UserController.validateUser(+req.params.idUser, req.body.valide);
             res.status(200).json(annex);
@@ -109,6 +121,16 @@ module.exports = function (app) {
         try {
             const service = await UserController.answerService(req.params.idUser, req.params.idService);
             res.status(201).json(service);
+        } catch (err) {
+            console.log(err);
+            res.status(409).json(err);
+        }
+    });
+
+    app.get("/user/get/all", AuthMiddleware.isManager(), async(req, res) =>{
+        try {
+            const users = await UserController.getAllUsers();
+            res.status(201).json(users);
         } catch (err) {
             console.log(err);
             res.status(409).json(err);

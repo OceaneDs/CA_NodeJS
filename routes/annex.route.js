@@ -220,7 +220,14 @@ module.exports = function (app) {
             console.log(err);
         }
     });
-
-
-
+    app.get("/annex/:idAnnex/service/list", AuthMiddleware.auth(), async (req,res) =>{
+        try{
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const services = await AnnexController.getSeviceList(req.params.idAnnex,user);
+            res.status(400).json(services);
+        }catch (e) {
+            res.status(400).json(e)
+        }
+    });
 };
