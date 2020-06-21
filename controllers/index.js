@@ -5,5 +5,6 @@ module.exports = {
     AssociationController: require('./association.controller'),
     SearchController: require('./search.controller'),
     ProductController: require('./product.controller'),
-    TypeController: require('./type.controller')
+    TypeController: require('./type.controller'),
+    TicketController: require('./ticket.controller')
 };

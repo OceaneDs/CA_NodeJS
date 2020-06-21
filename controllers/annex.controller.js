@@ -22,7 +22,7 @@ class AnnexController {
      * @param associationId
      * @returns {Promise<void>}
      */
-    static async createAnnex(name, email, street, zipCode, city, phone, associationId, horaire, user) {
+    static async createAnnex(name, description, email, street, zipCode, city, phone, associationId, horaire, user) {
 
         const association = await Association.findOne({
             where: {
@@ -32,6 +32,7 @@ class AnnexController {
         const annex = await Annex.create({
             name,
             email,
+            description,
             street,
             zipCode,
             city,
@@ -338,7 +339,7 @@ class AnnexController {
     }
 
 
-    static async updateAnnex(name, email, street, zipCode, city, phone, user, id) {
+    static async updateAnnex(name,description, email, street, zipCode, city, phone, user, id) {
         let annex = await Annex.findOne({
             where: {
                 id: id,
@@ -352,6 +353,7 @@ class AnnexController {
                 email: email,
                 street: street,
                 zipCode: zipCode,
+                description:description,
                 city: city,
                 phone: phone
             }, {
