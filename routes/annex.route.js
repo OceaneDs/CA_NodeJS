@@ -55,8 +55,8 @@ module.exports = function (app) {
         }
      */
     app.post('/annex/create', bodyParser.json(), AuthMiddleware.auth(), async (req, res) => {
-        const {name, email, street, zipCode, city, phone, associationId, horaires} = req.body;
-        const allRequireParams = Verification.allRequiredParam(name, email, street, zipCode, city, phone, associationId, res);
+        const {name, email, street, zipCode, city, phone, associationId, horaires, description} = req.body;
+        const allRequireParams = Verification.allRequiredParam(name, description, email, street, zipCode, city, phone, associationId, res);
         if (!allRequireParams) {
             return;
         }
@@ -67,7 +67,7 @@ module.exports = function (app) {
         try {
             const authorization = req.headers['authorization'];
             const user = await Verification.userFromToken(authorization.split(" ")[1]);
-            const annex = await AnnexController.createAnnex(name, email, street, zipCode, city, phone, associationId, horaires, user);
+            const annex = await AnnexController.createAnnex(name, description, email, street, zipCode, city, phone, associationId, horaires, user);
             res.status(201).json(annex);
         } catch (err) {
             res.status(409).json(err);
@@ -182,7 +182,7 @@ module.exports = function (app) {
         try {
             const authorization = req.headers['authorization'];
             const user = await Verification.userFromToken(authorization.split(" ")[1]);
-            const annex = await AnnexController.updateAnnex(name, email, street, zipCode, city, phone, user, req.params.id);
+            const annex = await AnnexController.updateAnnex(name, description, email, street, zipCode, city, phone, user, req.params.id);
             res.status(201).json(annex);
         } catch (err) {
             console.log(err)
@@ -202,25 +202,32 @@ module.exports = function (app) {
     });
 
     app.put("/annex/service/complete/:idService", AuthMiddleware.isManager(), async (req, res) => {
-        try{
+        try {
             const service = await AnnexController.completeService(req.params.idService);
             res.status(200).json(service);
-        }catch(err){
+        } catch (err) {
             res.status(409).json(err);
             console.log(err);
         }
     });
 
     app.put("/annex/service/delete/:idService", AuthMiddleware.isManager(), async (req, res) => {
-        try{
+        try {
             const service = await AnnexController.deleteService(req.params.idService);
             res.status(200).json(service);
-        }catch(err){
+        } catch (err) {
             res.status(409).json(err);
             console.log(err);
         }
     });
-
-
-
+    app.get("/annex/:idAnnex/service/list", AuthMiddleware.auth(), async (req, res) => {
+        try {
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const services = await AnnexController.getSeviceList(req.params.idAnnex, user);
+            res.status(400).json(services);
+        } catch (e) {
+            res.status(400).json(e)
+        }
+    });
 };

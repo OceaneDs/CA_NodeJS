@@ -3,5 +3,8 @@ module.exports = {
     AnnexController: require('./annex.controller'),
     UserController: require('./user.controller'),
     AssociationController: require('./association.controller'),
-    SearchController: require('./search.controller')
+    SearchController: require('./search.controller'),
+    ProductController: require('./product.controller'),
+    TypeController: require('./type.controller'),
+    TicketController: require('./ticket.controller')
 };

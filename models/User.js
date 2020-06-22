@@ -18,11 +18,13 @@ module.exports = (sequelize, DataTypes) => {
         birthdate: DataTypes.DATE,
         active: DataTypes.BOOLEAN,
         token: DataTypes.STRING,
-        validForVolunteer: DataTypes.STRING
+        validForVolunteer: DataTypes.STRING,
+        validForUser: DataTypes.STRING
 
     }, {});
     User.associate = function (models) {
         User.belongsTo(models.Role);
+        User.belongsToMany(models.Annex, {through: 'manager'});
         User.belongsToMany(models.Service, {through: 'repondre'});
         User.belongsToMany(models.Image, {through: 'userImage'});
     };

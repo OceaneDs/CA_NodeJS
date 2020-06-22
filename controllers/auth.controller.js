@@ -32,6 +32,7 @@ class AuthController {
         if (role.id === 2) {
             validForVolunteer = "ATTENTE";
         }
+        let validForUser = "ATTENTE";
         const user = await User.create({
             login,
             firstname,
@@ -44,7 +45,8 @@ class AuthController {
             password: await bcrypt.hash(password, 10),
             active: true,
             birthdate: birthdate,
-            validForVolunteer: validForVolunteer
+            validForVolunteer: validForVolunteer,
+            validForUser:validForUser
         });
         await user.setRole(role);
         return user;
@@ -77,10 +79,22 @@ class AuthController {
                     }
                 );
                 userFound.token = token;
+                if (userFound.validForUser === "ATTENTE"){
+                    return {
+                        message: "Votre inscription n'a pas encore été validée"
+                    };
+                }
+                if (userFound.validForUser === "REFUSE"){
+                    return {
+                        message: "Votre inscription a été refusée"
+                    };
+                }
                 if (userFound.active) {
                     return await userFound.save();
                 } else if (!userFound.active) {
-                    return await userFound.save();
+                    return {
+                        message: "Vous avez été banni de ce site"
+                    };
                 }
             }
         }

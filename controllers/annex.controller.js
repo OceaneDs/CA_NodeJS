@@ -22,7 +22,7 @@ class AnnexController {
      * @param associationId
      * @returns {Promise<void>}
      */
-    static async createAnnex(name, email, street, zipCode, city, phone, associationId, horaire, user) {
+    static async createAnnex(name, description, email, street, zipCode, city, phone, associationId, horaire, user) {
 
         const association = await Association.findOne({
             where: {
@@ -32,6 +32,7 @@ class AnnexController {
         const annex = await Annex.create({
             name,
             email,
+            description,
             street,
             zipCode,
             city,
@@ -71,12 +72,6 @@ class AnnexController {
                 id: annexId
             }
         });
-        const a = Annex.findOne({
-            where:{
-                id:annex
-            }
-        });
-        await MailService.sendMail(a.email,"annex");
         return annex;
     }
 
@@ -203,7 +198,7 @@ class AnnexController {
             if (manager) {
                 await manager.setRole(role);
                 await manager.save();
-                annex.addUser(manager);
+                await annex.addUser(manager);
                 return "Le manager à bien été ajouter";
             }
             return "Cet utilisateur n'existe pas";
@@ -236,7 +231,9 @@ class AnnexController {
     }
 
     static async getMyAnnexes(user) {
+
         const annexList = await user.getAnnexes();
+        console.log(annexList);
         return annexList.filter(annex => annex.active)
     }
 
@@ -303,23 +300,24 @@ class AnnexController {
      */
     static async createService(idAnnex, nom, date_service, description, quantite) {
 
-            const newService = await Service.create({
-                nom: nom,
-                date_service: date_service,
-                description: description,
-                quantite: quantite,
-                status: false,
-                actif: true
-            });
-            newService.setAnnex(idAnnex);
-            return newService;
+        console.log(date_service);
+        const newService = await Service.create({
+            nom: nom,
+            date_service: date_service,
+            description: description,
+            quantite: quantite,
+            status: false,
+            actif: true
+        });
+        newService.setAnnex(idAnnex);
+        return newService;
     }
 
     /**
-    * @param idService
-    * @returns {Promise<void>}
-    */
-    static async completeService(idService){
+     * @param idService
+     * @returns {Promise<void>}
+     */
+    static async completeService(idService) {
         return await Service.update({status: true}, {
             where: {
                 id: idService
@@ -331,8 +329,8 @@ class AnnexController {
      * @param idService
      * @returns {Promise<void>}
      */
-    static async deleteService(idService){
-        const service =  await Service.update({actif: false}, {
+    static async deleteService(idService) {
+        const service = await Service.update({actif: false}, {
             where: {
                 id: idService
             }
@@ -341,7 +339,7 @@ class AnnexController {
     }
 
 
-    static async updateAnnex(name, email, street, zipCode, city, phone, user, id) {
+    static async updateAnnex(name,description, email, street, zipCode, city, phone, user, id) {
         let annex = await Annex.findOne({
             where: {
                 id: id,
@@ -355,6 +353,7 @@ class AnnexController {
                 email: email,
                 street: street,
                 zipCode: zipCode,
+                description:description,
                 city: city,
                 phone: phone
             }, {
@@ -367,6 +366,28 @@ class AnnexController {
         return "Vous n'êtes pas manager de cette annexe"
     }
 
+    /**
+     *
+     * @param idAnnex
+     * @param user
+     * @returns {Promise<void>}
+     */
+    static async getSeviceList(idAnnex, user) {
+        const role = user.getRole();
+        if (role.id === 4) {
+            return Service.findAll({
+                where: {
+                    AnnexId:idAnnex,
+                    active: true
+                }
+            });
+        }
+        return Service.findAll({
+            where: {
+                AnnexId:idAnnex
+            }
+        });
+    }
 
 }
 
