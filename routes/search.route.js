@@ -96,16 +96,6 @@ module.exports = function (app){
         }
     });
 
-    app.get('/search/all/Service', AuthMiddleware.isAdmin(), async (req, res) => {
-        try {
-            const allInstances = await SearchController.getAllInstances();
-            res.status(200).json(allInstances);
-        } catch (err) {
-            console.log(err);
-            res.status(409).json(err);
-        }
-    });
-
 
     app.get('/search/all/:table', AuthMiddleware.isAdmin(), async (req, res) => {
         try {
