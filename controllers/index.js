@@ -2,6 +2,7 @@ module.exports = {
     AuthController: require('./auth.controller'),
     AnnexController: require('./annex.controller'),
     UserController: require('./user.controller'),
+    ServiceController: require('./service.controller'),
     AssociationController: require('./association.controller'),
     SearchController: require('./search.controller'),
     ProductController: require('./product.controller'),

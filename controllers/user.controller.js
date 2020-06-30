@@ -3,7 +3,6 @@ const User = models.User;
 const Annex = models.Annex;
 const Report = models.Report;
 const Role = models.Role;
-const Service = models.Service;
 const MailService = require('../service/mail.service');
 
 class UserController {
@@ -109,27 +108,6 @@ class UserController {
         return user;
     }
 
-
-    /**
-     * @param idUser
-     * @param idService
-     * @returns {Promise<void>}
-     */
-    static async answerService(idUser, idService) {
-        const service = await Service.findOne({
-            where: {
-                id: idService
-            }
-        });
-        const user = await User.findOne({
-            where: {
-                id: idUser
-            }
-        });
-
-        service.addUser(user);
-        return service;
-    }
 
     static async getAllUsers() {
         return User.findAll({

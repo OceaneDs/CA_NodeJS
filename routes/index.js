@@ -2,6 +2,7 @@ module.exports = function () {
     require('./auth.route')(...arguments);
     require('./annex.route')(...arguments);
     require('./user.route')(...arguments);
+    require('./service.route')(...arguments);
     require('./association.route')(...arguments);
     require('./search.route')(...arguments);
     require('./product.route')(...arguments);
