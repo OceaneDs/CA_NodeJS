@@ -1,3 +1,9 @@
+const Sequelize = require('sequelize');
+const op = Sequelize.Op;
+const operatorsAliases = {
+    $eq: op.eq,
+    $or: op.or,
+}
 const models = require('../models');
 const Product = models.Product;
 
@@ -14,6 +20,20 @@ class ProductController {
             TypeId: id,
             name
         });
+    }
+
+    /**
+     * @param name
+     * @returns {Promise<Product>}
+     */
+    static searchProduct(name) {
+        return Product.findAll({
+            where: {
+                name: {
+                    [op.like]: name+'%'
+                }
+            }
+        })
     }
 
     /**

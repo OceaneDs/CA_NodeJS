@@ -23,9 +23,27 @@ module.exports = function (app) {
         }
     });
 
-    app.get("/product/ban/:id", bodyParser.json(), async (req, res) => {
+    app.post('/product/searchProduct', bodyParser.json(), async  (req, res) => {
+        if(req.body.name) {
+            try {
+                const productList = await ProductController.searchProduct(req.body.name);
+                res.status(201).json(productList);
+            } catch (err) {
+                console.log(err)
+                res.status(409).end();
+            }
+        } else {
+            res.status(400).end();
+        }
+    });
+
+//AuthMiddleware.isAdmin()
+    /**
+     *
+     */
+    app.get("/product/ban/:idProduct", bodyParser.json(), async (req, res) => {
         try {
-            const product = await ProductController.banProduct(+req.params.id);
+            const product = await ProductController.banProduct(req.params.id);
             res.status(200).json(product);
         } catch (err) {
             res.status(409).json(err);

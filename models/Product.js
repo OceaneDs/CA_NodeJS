@@ -5,12 +5,12 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true
         },
-        name: {
-            type: DataTypes.STRING
-        }
+        name: DataTypes.STRING,
+        active: DataTypes.BOOLEAN
     }, {});
     Product.associate = (models) => {
         Product.belongsTo(models.Type);
+        Product.hasMany(models.Donation);
     };
     return Product;
 };
