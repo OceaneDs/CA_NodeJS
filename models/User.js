@@ -23,8 +23,9 @@ module.exports = (sequelize, DataTypes) => {
     }, {});
     User.associate = function (models) {
         User.belongsTo(models.Role);
+        User.belongsToMany(models.Annex, {through: 'manager'});
         User.belongsToMany(models.Service, {through: 'repondre'});
         User.belongsToMany(models.Image, {through: 'userImage'});
-    };
+    }
     return User;
 };
