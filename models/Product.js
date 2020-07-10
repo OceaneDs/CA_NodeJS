@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {});
     Product.associate = (models) => {
         Product.belongsTo(models.Type);
-        Product.hasMany(models.Donation);
+        Product.hasMany(models.Requerir);
     };
     return Product;
 };
