@@ -10,13 +10,15 @@ class DonationController {
     /**
      *
      * @param name
+     * @param description
      * @param products
      * @param idAnnex
      * @returns {Promise<void>}
      */
-    static async createDonation(name, products, idAnnex) {
+    static async createDonation(name, description, products, idAnnex) {
         const newDonation = await Donation.create({
-            name: name,
+            nom: name,
+            description: description,
             status: false,
             actif: true
         });

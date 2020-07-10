@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        name: DataTypes.STRING,
+        nom: DataTypes.STRING,
+        description: DataTypes.TEXT,
         status: DataTypes.BOOLEAN,
         actif: DataTypes.BOOLEAN,
     }, {});
