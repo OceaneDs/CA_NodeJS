@@ -21,16 +21,16 @@ class DonationController {
             actif: true
         });
         for (let i = 0; i < products.length; i++) {
-            const product = await Product.findOne({
+            const productRequest = await Product.findOne({
                 where: {
                     id: products[i].idProduct
                 }
             })
-            if (product){
+            if (productRequest){
                 const requerir = await Requerir.create({
                     quantity: products[i].quantity,
                     DonationId: newDonation.id,
-                    ProductId: product.id
+                    ProductId: productRequest.id
                 })
             }
         }
