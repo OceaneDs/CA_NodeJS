@@ -41,10 +41,11 @@ class AuthController {
             zipCode,
             city,
             phone,
+            validForUser: "ATTENTE",
             password: await bcrypt.hash(password, 10),
             active: true,
             birthdate: birthdate,
-            validForVolunteer: validForVolunteer
+            validForVolunteer: validForVolunteer,
         });
         await user.setRole(role);
         return user;

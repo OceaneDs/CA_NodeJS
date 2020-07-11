@@ -68,7 +68,13 @@ module.exports = function (app) {
         if (!allRequiredParams) return;
         try {
             const user = await AuthController.login(req.body.login, req.body.password);
-            res.status(200).json(user);
+            if (user.message){
+                res.status(403).json(user);
+
+            } else {
+                res.status(200).json(user);
+
+            }
         } catch (err) {
             res.status(500).end();
         }
