@@ -16,7 +16,14 @@ async function bootstrap() {
     }));
     //await helper.parseExcelAndInsertInDatabase();
     app.use(bodyParser.urlencoded({extended: true}));
+    app.use(function (req , res, next) {
+        res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+        res.header("Access-Control-Allow-Headers", "*");
+        res.header("Access-Control-Allow-Methods", "GET,HEAD,POST,DELETE,PUT");
+        next();
+    });
     routes(app);
+
     app.listen(3000, () => console.log(`Listening on 3000`));
 }
 

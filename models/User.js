@@ -27,6 +27,6 @@ module.exports = (sequelize, DataTypes) => {
         User.belongsToMany(models.Annex, {through: 'manager'});
         User.belongsToMany(models.Service, {through: 'repondre'});
         User.belongsToMany(models.Image, {through: 'userImage'});
-    };
+    }
     return User;
 };

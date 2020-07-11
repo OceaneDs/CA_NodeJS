@@ -42,11 +42,12 @@ class AuthController {
             zipCode,
             city,
             phone,
+            validForUser: validForUser,
             password: await bcrypt.hash(password, 10),
             active: true,
             birthdate: birthdate,
             validForVolunteer: validForVolunteer,
-            validForUser:validForUser
+
         });
         await user.setRole(role);
         return user;
