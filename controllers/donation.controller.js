@@ -67,6 +67,22 @@ class DonationController {
         });
     }
 
+    static async  getDonationList(idAnnex, user) {
+        const role = user.getRole();
+        if (role.id === 4) {
+            return Donation.findAll({
+                where: {
+                    AnnexId: idAnnex,
+                    active: true
+                }
+            });
+        }
+        return Donation.findAll({
+            where: {
+                AnnexId: idAnnex
+            }
+        });
+    }
 }
 
 module.exports = DonationController;

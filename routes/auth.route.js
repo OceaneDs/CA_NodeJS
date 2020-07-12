@@ -70,7 +70,6 @@ module.exports = function (app) {
             const user = await AuthController.login(req.body.login, req.body.password);
             if (user.message){
                 res.status(403).json(user);
-
             } else {
                 res.status(200).json(user);
 

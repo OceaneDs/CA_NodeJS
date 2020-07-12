@@ -91,7 +91,7 @@ class SearchController {
                 actif: true
             }
         });
-        data.don.push(don);
+        data.don.push(...don);
         const services =  await Service.findAll({
             where: {
                 nom: {
@@ -100,7 +100,7 @@ class SearchController {
                 actif: true
             }
         });
-        data.service.push(services);
+        data.service.push(...services);
         return  data;
     }
 }
