@@ -106,5 +106,17 @@ module.exports = function (app){
             res.status(409).json(err);
         }
     });
-
+    app.post('/search/all/needs', bodyParser.json(), async  (req, res) => {
+        if(req.body.name) {
+            try {
+                const needList = await SearchController.searchNeed(req.body.name);
+                res.status(201).json(needList);
+            } catch (err) {
+                console.log(err)
+                res.status(409).end();
+            }
+        } else {
+            res.status(400).end();
+        }
+    });
 };

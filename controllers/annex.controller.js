@@ -8,7 +8,12 @@ const Role = models.Role;
 const User = models.User;
 const Report = models.Report;
 const Service = models.Service;
-
+const Sequelize = require('sequelize');
+const op = Sequelize.Op;
+const operatorsAliases = {
+    $eq: op.eq,
+    $or: op.or,
+}
 
 class AnnexController {
 
@@ -396,8 +401,10 @@ class AnnexController {
         return Annex.findAll({
             where: {
                 name: {
-                    [op.like]: name + '%'
-                }
+                    [op.like]: name + '%',
+                },
+                active: true
+
             }
         })
     }
