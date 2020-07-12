@@ -230,4 +230,16 @@ module.exports = function (app) {
             res.status(400).json(e)
         }
     });
+    app.post('/product/searchAnnex', bodyParser.json(), async  (req, res) => {
+        if(req.body.name) {
+            try {
+                const AnnexList = await AnnexController.searchAnnex(req.body.name);
+                res.status(201).json(AnnexList);
+            } catch (err) {
+                res.status(409).end();
+            }
+        } else {
+            res.status(400).end();
+        }
+    });
 };

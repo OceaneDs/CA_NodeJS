@@ -339,7 +339,7 @@ class AnnexController {
     }
 
 
-    static async updateAnnex(name,description, email, street, zipCode, city, phone, user, id) {
+    static async updateAnnex(name, description, email, street, zipCode, city, phone, user, id) {
         let annex = await Annex.findOne({
             where: {
                 id: id,
@@ -353,7 +353,7 @@ class AnnexController {
                 email: email,
                 street: street,
                 zipCode: zipCode,
-                description:description,
+                description: description,
                 city: city,
                 phone: phone
             }, {
@@ -377,18 +377,30 @@ class AnnexController {
         if (role.id === 4) {
             return Service.findAll({
                 where: {
-                    AnnexId:idAnnex,
+                    AnnexId: idAnnex,
                     active: true
                 }
             });
         }
         return Service.findAll({
             where: {
-                AnnexId:idAnnex
+                AnnexId: idAnnex
             }
         });
     }
 
+    /**
+     *
+     */
+    static async searchAnnex(name) {
+        return Annex.findAll({
+            where: {
+                name: {
+                    [op.like]: name + '%'
+                }
+            }
+        })
+    }
 }
 
 
