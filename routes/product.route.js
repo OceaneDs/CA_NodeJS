@@ -41,7 +41,7 @@ module.exports = function (app) {
     /**
      *
      */
-    app.get("/product/ban/:idProduct", bodyParser.json(), async (req, res) => {
+    app.get("/product/ban/:idProduct",AuthMiddleware.isAdmin(), bodyParser.json(), async (req, res) => {
         try {
             const product = await ProductController.banProduct(req.params.id);
             res.status(200).json(product);

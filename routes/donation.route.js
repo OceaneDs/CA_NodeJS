@@ -6,7 +6,7 @@ const DonationController = require("../controllers/donation.controller");
 module.exports = function (app) {
 
     // create a donation
-    app.post("/donation/:idAnnex", bodyParser.json(), async (req, res) => {
+    app.post("/donation/:idAnnex", bodyParser.json(),AuthMiddleware.isManager(), async (req, res) => {
         try {
             const donation = await DonationController.createDonation(req.body.name, req.body.description,req.body.productRequests, req.params.idAnnex);
             res.status(201).json(donation);

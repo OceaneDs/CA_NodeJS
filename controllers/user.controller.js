@@ -15,7 +15,7 @@ class UserController {
      */
     static async banUser(userId) {
 
-        const user = await User.update({active: false , validForVolunteer:"REFUSE", validForUser:"REFUSE"}, {
+        const user = await User.update({active: false, validForVolunteer: "REFUSE", validForUser: "REFUSE"}, {
             where: {
                 id: userId
             }
@@ -126,14 +126,18 @@ class UserController {
                 id: idUser
             }
         });
-
-        service.addUser(user);
+        if (user) {
+            if (user.RoleId === 1) {
+                return {message: "Vous n'avez pas le droit de répondre aà un service"}
+            }
+            service.addUser(user)
+        }
         return service;
     }
 
     static async getAllUsers() {
         return User.findAll({
-            include:Role
+            include: Role
         });
     }
 }
