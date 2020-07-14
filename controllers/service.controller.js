@@ -4,6 +4,31 @@ const Service = models.Service;
 class ServiceController {
 
     /**
+     * @param idUser
+     * @param idService
+     * @returns {Promise<void>}
+     */
+    static async answerService(idUser, idService) {
+        const service = await Service.findOne({
+            where: {
+                id: idService
+            }
+        });
+        const user = await User.findOne({
+            where: {
+                id: idUser
+            }
+        });
+        if (user) {
+            if (user.RoleId === 1) {
+                return {message: "Vous n'avez pas le droit de réponder à un service en tant que donateur"}
+            }
+        }
+        service.addUser(user);
+        return service;
+    }
+
+    /**
      * @param date_service
      * @param nom
      * @param description
