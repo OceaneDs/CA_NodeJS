@@ -18,7 +18,7 @@ module.exports = function (app) {
 
     app.put("/donation/complete/:idDonation", AuthMiddleware.isManager(), async (req, res) => {
         try{
-            const donation = await DonationController.completeDonation(req.params.id);
+            const donation = await DonationController.completeDonation(req.params.idDonation);
             res.status(200).json(donation);
         }catch(err){
             res.status(409).json(err);
@@ -28,7 +28,7 @@ module.exports = function (app) {
 
     app.put("/annex/donation/delete/:idDonation", AuthMiddleware.isManager(), async (req, res) => {
         try{
-            const donation = await DonationController.deleteDonation(req.params.id);
+            const donation = await DonationController.deleteDonation(req.params.idDonation);
             res.status(200).json(donation);
         }catch(err){
             res.status(409).json(err);
@@ -42,9 +42,26 @@ module.exports = function (app) {
             const authorization = req.headers['authorization'];
             const user = await Verification.userFromToken(authorization.split(" ")[1]);
             const services = await DonationController.getDonationList(req.params.idAnnex, user);
-            res.status(400).json(services);
+            res.status(200).json(services);
         } catch (e) {
             res.status(400).json(e)
         }
     });
+
+    app.get("/donation/get/:idDonation", AuthMiddleware.auth(), async (req, res) => {
+        try {
+            const services = await DonationController.getDonationById(req.params.idDonation);
+            res.status(200).json(services);
+        } catch (e) {
+            res.status(400).json(e)
+        }
+    })
 };
+
+
+/**
+ idUser,
+ donation:[
+ {idProduit:1,quantity:10}
+ ]
+ */

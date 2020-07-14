@@ -140,6 +140,14 @@ class UserController {
             include: Role
         });
     }
+
+    static async getCurrentUser(userFromTOken) {
+        return User.findOne({
+            where:{
+                id:userFromTOken.id
+            }
+        });
+    }
 }
 
 module.exports = UserController;

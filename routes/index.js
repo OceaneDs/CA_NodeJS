@@ -8,4 +8,5 @@ module.exports = function () {
     require('./type.route')(...arguments);
     require('./ticket.route')(...arguments);
     require('./donation.route')(...arguments);
+    require('./service.route')(...arguments);
 };

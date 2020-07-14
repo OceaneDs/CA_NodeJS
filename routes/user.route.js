@@ -52,6 +52,18 @@ module.exports = function (app) {
         }
     });
 
+    app.get('/user/find/currentUser', AuthMiddleware.auth(), async (req, res) => {
+        try {
+            const authorization = req.headers['authorization'];
+            const userFromTOken = await Verification.userFromToken(authorization.split(" ")[1]);
+            const response = await UserController.getCurrentUser(userFromTOken);
+            res.status(201).json(response);
+        } catch (err) {
+            console.log(err)
+            res.status(409).json(err);
+        }
+    });
+
     app.put('/user/update/:idUser', bodyParser.json(), AuthMiddleware.auth(), async (req, res) => {
         let {login, firstname, email, lastname, street, zipCode, city, phone, roleId, birthdate} = req.body;
         try {

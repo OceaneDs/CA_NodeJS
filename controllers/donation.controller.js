@@ -28,7 +28,7 @@ class DonationController {
                     id: products[i].idProduct
                 }
             })
-            if (productRequest){
+            if (productRequest) {
                 const requerir = await Requerir.create({
                     quantity: products[i].quantity,
                     DonationId: newDonation.id,
@@ -46,7 +46,7 @@ class DonationController {
      * @param quantityDonation
      * @returns {Promise<void>}
      */
-    static async completeDonation(idDonation, quantityDonation){
+    static async completeDonation(idDonation, quantityDonation) {
         return await Donation.update({status: true}, {
             where: {
                 id: idDonation,
@@ -59,7 +59,7 @@ class DonationController {
      * @param idDonation
      * @returns {Promise<void>}
      */
-    static async deleteDonation(idDonation){
+    static async deleteDonation(idDonation) {
         return Donation.update({active: false}, {
             where: {
                 id: idDonation
@@ -67,7 +67,7 @@ class DonationController {
         });
     }
 
-    static async  getDonationList(idAnnex, user) {
+    static async getDonationList(idAnnex, user) {
         const role = user.getRole();
         if (role.id === 4) {
             return Donation.findAll({
@@ -83,6 +83,15 @@ class DonationController {
             }
         });
     }
+
+    static async getDonationById(idDonation) {
+        return Donation.findOne({
+            where: {
+                id: idDonation
+            }
+        })
+    }
+
 }
 
 module.exports = DonationController;
