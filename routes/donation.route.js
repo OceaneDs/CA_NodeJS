@@ -56,6 +56,15 @@ module.exports = function (app) {
             res.status(400).json(e)
         }
     })
+    app.post("/donation/answer/:idDonation", bodyParser.json(),AuthMiddleware.isManager(), async (req, res) => {
+        try {
+            const donation = await DonationController.answerDonation();
+            res.status(201).json(donation);
+        } catch (err) {
+            res.status(409).json(err);
+            console.log(err);
+        }
+    });
 };
 
 
