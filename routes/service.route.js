@@ -56,4 +56,14 @@ module.exports = function (app) {
             res.status(400).json(e)
         }
     });
+
+    app.post("/user/:idUser/answer/service/:idService", AuthMiddleware.isVolunteer(), async (req, res) => {
+        try {
+            const service = await ServiceController.answerService(req.params.idUser, req.params.idService);
+            res.status(201).json(service);
+        } catch (err) {
+            console.log(err);
+            res.status(409).json(err);
+        }
+    });
 };
