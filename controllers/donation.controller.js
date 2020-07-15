@@ -1,10 +1,11 @@
 const models = require('../models');
 const Annex = models.Annex;
 const Association = models.Association;
-const User = models.User;
+const UserDonation = models.UserDonation;
 const Donation = models.Donation;
 const Product = models.Product;
 const Requerir = models.Requerir;
+const Sequelize = require('sequelize');
 
 class DonationController {
     /**
@@ -90,6 +91,25 @@ class DonationController {
                 id: idDonation
             }
         })
+    }
+
+    static async answerDonation(donations, user, idDonation) {
+        for (let i = 0; i < donations.length; i++) {
+            const donation = await UserDonation.create({
+                UserId: user.id,
+                quantity: donations[i].quantity,
+                ProductId: donations[i].productId,
+                DonationId: idDonation,
+                give: false
+            });
+            const requerir = await Requerir.update({quantity: sequelize.literal('quantity -'+donations[i].quantity) }, {
+                where: {
+                    DonationId: idDonation,
+                    ProductId: donations[i].productId
+                }
+            });
+        }
+        return {message: "Votre donation a bien été enregistré"}
     }
 
 }

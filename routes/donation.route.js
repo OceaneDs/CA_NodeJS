@@ -41,8 +41,8 @@ module.exports = function (app) {
         try {
             const authorization = req.headers['authorization'];
             const user = await Verification.userFromToken(authorization.split(" ")[1]);
-            const services = await DonationController.getDonationList(req.params.idAnnex, user);
-            res.status(200).json(services);
+            const donations = await DonationController.getDonationList(req.params.idAnnex, user);
+            res.status(200).json(donations);
         } catch (e) {
             res.status(400).json(e)
         }
@@ -56,9 +56,11 @@ module.exports = function (app) {
             res.status(400).json(e)
         }
     })
-    app.post("/donation/answer/:idDonation", bodyParser.json(),AuthMiddleware.isManager(), async (req, res) => {
+    app.post("/donation/answer/:idDonation", bodyParser.json(),AuthMiddleware.auth(), async (req, res) => {
         try {
-            const donation = await DonationController.answerDonation();
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const donation = await DonationController.answerDonation(req.body.donations,user,req.params.idDonation);
             res.status(201).json(donation);
         } catch (err) {
             res.status(409).json(err);
@@ -69,7 +71,6 @@ module.exports = function (app) {
 
 
 /**
- idUser,
  donation:[
  {idProduit:1,quantity:10}
  ]

@@ -65,7 +65,7 @@ module.exports = function (app) {
             } else {
                 res.status(201).json(service);
             }
-        } catch (err) {
+        } catch (err) {                                                                                                                                                                              
             res.status(409).json(err);
         }
     });

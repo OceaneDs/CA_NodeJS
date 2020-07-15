@@ -99,7 +99,7 @@ class UserController {
         });
         const user = await User.update({
             login: login, firstname: firstname, email: email,
-            lastname: lastname, street: street, zipCode: street, city: city,
+            lastname: lastname, street: street, zipCode: zipCode, city: city,
             phone: phone, birthdate: birthdate, validForVolunteer: validForVolunteer, RoleId: role.id,
         }, {
             where: {
