@@ -55,7 +55,7 @@ module.exports = function (app) {
         } catch (e) {
             res.status(400).json(e)
         }
-    })
+    });
     app.post("/donation/answer/:idDonation", bodyParser.json(),AuthMiddleware.auth(), async (req, res) => {
         try {
             const authorization = req.headers['authorization'];
@@ -67,11 +67,17 @@ module.exports = function (app) {
             console.log(err);
         }
     });
+
+    app.get("/donation/get/past/list", AuthMiddleware.auth(), async (req, res) => {
+        try {
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const donation = await DonationController.getPastDonations(user);
+            res.status(200).json(donation);
+        } catch (e) {
+            console.log("===================================================================")
+            console.log(e)
+            res.status(400).json(e)
+        }
+    });
 };
-
-
-/**
- donation:[
- {idProduit:1,quantity:10}
- ]
- */

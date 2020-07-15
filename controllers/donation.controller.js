@@ -5,6 +5,7 @@ const UserDonation = models.UserDonation;
 const Donation = models.Donation;
 const Product = models.Product;
 const Requerir = models.Requerir;
+const Type = models.Type;
 const Sequelize = require('sequelize');
 
 class DonationController {
@@ -87,6 +88,20 @@ class DonationController {
 
     static async getDonationById(idDonation) {
         return Donation.findOne({
+            include: {
+                model: Requerir,
+                include: {
+                    model: Product,
+                    include: {
+                        model: Type
+                    }
+                },
+                /*  separate: true,
+                  order: [
+                      [ 'id', 'ASC']
+                  ]
+  */
+            },
             where: {
                 id: idDonation
             }
@@ -102,7 +117,7 @@ class DonationController {
                 DonationId: idDonation,
                 give: false
             });
-            const requerir = await Requerir.update({quantity: sequelize.literal('quantity -'+donations[i].quantity) }, {
+            const requerir = await Requerir.update({quantity: sequelize.literal('quantity -' + donations[i].quantity)}, {
                 where: {
                     DonationId: idDonation,
                     ProductId: donations[i].productId
@@ -110,6 +125,36 @@ class DonationController {
             });
         }
         return {message: "Votre donation a bien été enregistré"}
+    }
+
+    static async getPastDonations(user) {
+        const response = [];
+        const donationList = await Donation.findAll({
+            where: {
+                actif: true
+
+            }
+        });
+        for (let i = 0; i < donationList.length; i++) {
+            let don = {};
+            const userDonation = await UserDonation.findAll({
+                include: {
+                    model: Product,
+                    include: {
+                        model: Type
+                    }
+                },
+                where: {
+                    DonationId: donationList[i].id,
+                    UserId: user.id
+                }
+            });
+            if (userDonation.length > 0) {
+                don = {donation: donationList[i], gift: userDonation};
+                response.push(don)
+            }
+        }
+        return {donationHistory:response};
     }
 
 }
