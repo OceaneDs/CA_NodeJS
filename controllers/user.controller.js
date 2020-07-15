@@ -162,9 +162,11 @@ class UserController {
 
         for (let i = 0; i < us.length; i++) {
             const donation = await this.getDonationList(us[i].DonationId);
-            const annex = await this.getAnnex(donation.AnnexId);
-            if (!helpedAnnexes.some(a => a.id === annex.id)) {
-                helpedAnnexes.push(annex);
+            for (let val = 0; val < donation.length; val++) {
+                const annex = await this.getAnnex(donation[val].AnnexId);
+                if (!helpedAnnexes.some(a => a.id === annex.id)) {
+                    helpedAnnexes.push(annex);
+                }
             }
         }
         const pendingDonations = [];
@@ -179,7 +181,7 @@ class UserController {
         const services = await Service.findAll({
             where: {
                 status: true,
-                actif:true
+                actif: true
             }
         });
         const myServices = [];
@@ -203,7 +205,7 @@ class UserController {
         const services = await Service.findAll({
             where: {
                 status: false,
-                actif:true
+                actif: true
             }
         });
         const myServices = [];
@@ -229,7 +231,7 @@ class UserController {
             const donation = await Donation.findOne({
                 where: {
                     id: us[i].DonationId,
-                    actif:true
+                    actif: true
                 }
             });
 
@@ -256,7 +258,7 @@ class UserController {
             attributes: ['AnnexId'],
             where: {
                 id: idDonation,
-                actif:true
+                actif: true
             },
             group: ['Donation.AnnexId']
         });
@@ -266,8 +268,8 @@ class UserController {
         return Annex.findOne({
             where: {
                 id: idAnnex,
-                active:true,
-                valid:true
+                active: true,
+                valid: true
             }
         });
     }
