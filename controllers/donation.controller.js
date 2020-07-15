@@ -96,11 +96,6 @@ class DonationController {
                         model: Type
                     }
                 },
-                /*  separate: true,
-                  order: [
-                      [ 'id', 'ASC']
-                  ]
-  */
             },
             where: {
                 id: idDonation

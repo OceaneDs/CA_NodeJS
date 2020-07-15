@@ -75,8 +75,6 @@ module.exports = function (app) {
             const donation = await DonationController.getPastDonations(user);
             res.status(200).json(donation);
         } catch (e) {
-            console.log("===================================================================")
-            console.log(e)
             res.status(400).json(e)
         }
     });
