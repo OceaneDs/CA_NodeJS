@@ -6,16 +6,16 @@ const AuthMiddleware = require('../middlewares/auth.middleware');
 module.exports = function (app) {
 
     app.get("/", (req, res) => {
-        res.json({ message: "Welcome to CA application." });
+        res.json({message: "Welcome to CA application."});
     });
 
     // create a product
     app.post('/product/create', AuthMiddleware.isManager(), bodyParser.json(), async (req, res) => {
-        if(req.body.name && req.body.typeId) {
-            try  {
+        if (req.body.name && req.body.typeId) {
+            try {
                 const product = await ProductController.create(req.body.typeId, req.body.name);
                 res.status(201).json(product);
-            } catch(err) {
+            } catch (err) {
                 res.status(409).end();
             }
         } else {
@@ -23,8 +23,8 @@ module.exports = function (app) {
         }
     });
 
-    app.post('/product/searchProduct', bodyParser.json(), async  (req, res) => {
-        if(req.body.name) {
+    app.post('/product/searchProduct', bodyParser.json(), async (req, res) => {
+        if (req.body.name) {
             try {
                 const productList = await ProductController.searchProduct(req.body.name);
                 res.status(201).json(productList);
@@ -37,11 +37,10 @@ module.exports = function (app) {
         }
     });
 
-//AuthMiddleware.isAdmin()
     /**
      *
      */
-    app.get("/product/ban/:idProduct",AuthMiddleware.isAdmin(), bodyParser.json(), async (req, res) => {
+    app.get("/product/ban/:idProduct", AuthMiddleware.isAdmin(), bodyParser.json(), async (req, res) => {
         try {
             const product = await ProductController.banProduct(req.params.id);
             res.status(200).json(product);

@@ -45,7 +45,7 @@ module.exports = function (app) {
     app.get('/user/report/:idUser/:idAnnex', AuthMiddleware.isManager(), async (req, res) => {
         try {
             const response = await UserController.reportUser(req.params.idAnnex, req.params.idUser);
-            res.status(201).json(response);
+            res.status(200).json(response);
         } catch (err) {
             console.log(err)
             res.status(409).json(err);
@@ -57,7 +57,7 @@ module.exports = function (app) {
             const authorization = req.headers['authorization'];
             const userFromTOken = await Verification.userFromToken(authorization.split(" ")[1]);
             const response = await UserController.getCurrentUser(userFromTOken);
-            res.status(201).json(response);
+            res.status(200).json(response);
         } catch (err) {
             console.log(err)
             res.status(409).json(err);
@@ -135,7 +135,7 @@ module.exports = function (app) {
            if (service.message){
                res.status(400).json(service.message);
            } else {
-               res.status(201).json(service);
+               res.status(200).json(service);
            }
         } catch (err) {
             console.log(err);
@@ -146,7 +146,19 @@ module.exports = function (app) {
     app.get("/user/get/all", AuthMiddleware.isAdmin(), async(req, res) =>{
         try {
             const users = await UserController.getAllUsers();
-            res.status(201).json(users);
+            res.status(200).json(users);
+        } catch (err) {
+            console.log(err);
+            res.status(409).json(err);
+        }
+    });
+
+    app.get("/user/get/AllActions", AuthMiddleware.auth(), async(req, res) =>{
+        try {
+            const authorization = req.headers['authorization'];
+            const userFromTOken = await Verification.userFromToken(authorization.split(" ")[1]);
+            const actions = await UserController.getHomeAnnex(userFromTOken);
+            res.status(200).json(actions);
         } catch (err) {
             console.log(err);
             res.status(409).json(err);
