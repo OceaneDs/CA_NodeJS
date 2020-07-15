@@ -65,8 +65,19 @@ module.exports = function (app) {
             } else {
                 res.status(201).json(service);
             }
-        } catch (err) {                                                                                                                                                                              
+        } catch (err) {
             res.status(409).json(err);
+        }
+    });
+
+    app.get("/service/get/past/list", AuthMiddleware.auth(), async (req, res) => {
+        try {
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const services = await ServiceController.getPastServices(user);
+            res.status(200).json(services);
+        } catch (e) {
+            res.status(400).json(e)
         }
     });
 };

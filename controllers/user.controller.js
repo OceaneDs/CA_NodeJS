@@ -178,7 +178,8 @@ class UserController {
         const array = [];
         const services = await Service.findAll({
             where: {
-                status: true
+                status: true,
+                actif:true
             }
         });
         const myServices = [];
@@ -201,7 +202,8 @@ class UserController {
     static async getPendingServices(idUser) {
         const services = await Service.findAll({
             where: {
-                status: false
+                status: false,
+                actif:true
             }
         });
         const myServices = [];
@@ -226,7 +228,8 @@ class UserController {
         for (let i = 0; i < us.length; i++) {
             const donation = await Donation.findOne({
                 where: {
-                    id: us[i].DonationId
+                    id: us[i].DonationId,
+                    actif:true
                 }
             });
 
@@ -252,7 +255,8 @@ class UserController {
         return Donation.findAll({
             attributes: ['AnnexId'],
             where: {
-                id: idDonation
+                id: idDonation,
+                actif:true
             },
             group: ['Donation.AnnexId']
         });
@@ -261,7 +265,9 @@ class UserController {
     static async getAnnex(idAnnex) {
         return Annex.findOne({
             where: {
-                id: idAnnex
+                id: idAnnex,
+                active:true,
+                valid:true
             }
         });
     }

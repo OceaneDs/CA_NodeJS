@@ -87,7 +87,7 @@ class ServiceController {
             return Service.findAll({
                 where: {
                     AnnexId: idAnnex,
-                    active: true
+                    actif: true
                 }
             });
         }
@@ -109,6 +109,25 @@ class ServiceController {
                 AnnexId: idAnnex
             }
         });
+    }
+
+     static async getPastServices(user) {
+        const serviceList = await Service.findAll({
+            where:{
+                status:true,
+                actif:true
+            }
+        });
+         const myServices = [];
+         for (let i = 0; i < serviceList.length; i++) {
+             const service = serviceList[i];
+             const users = await serviceList.getUsers();
+             if (users.some(user => user.id === user.id)) {
+                 myServices.push(service);
+             }
+         }
+         return myServices;
+
     }
 
 }
