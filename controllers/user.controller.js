@@ -106,7 +106,11 @@ class UserController {
                 id: idUser
             }
         });
-        return user;
+        return User.findOne({
+            where:{
+                id:idUser
+            }
+        });
     }
 
 
