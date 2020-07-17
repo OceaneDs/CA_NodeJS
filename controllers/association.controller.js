@@ -6,56 +6,16 @@ const Day = models.Day;
 const Role = models.Role;
 const User = models.User;
 const MailService = require('../service/mail.service');
+const Sequelize = require('sequelize');
+const op = Sequelize.Op;
+const operatorsAliases = {
+    $eq: op.eq,
+    $or: op.or,
+};
 
 
 class AssociationController {
 
-    /**
-     * @param name
-     * @param email
-     * @param street
-     * @param zipCode
-     * @param city
-     * @param phone
-     * @param associationId
-     * @returns {Promise<void>}
-     */
-    static async createAnnex(name, email, street, zipCode, city, phone, associationId, horaire, user) {
-
-        const association = await Association.findOne({
-            where: {
-                id: associationId
-            }
-        });
-        const annex = await Annex.create({
-            name,
-            email,
-            street,
-            zipCode,
-            city,
-            phone,
-            active: true,
-            valid: false,
-        });
-        await annex.setAssociation(association);
-        await annex.addUser(user);
-        if (horaire) {
-            for (let i = 0; i < horaire.length; i++) {
-                const day = await Day.findOne({
-                    where: {
-                        id: horaire[i].idJour
-                    }
-                });
-                const annexAvailability = await AnnexAvailability.create({
-                    openingTime: horaire[i].openingTime,
-                    closingTime: horaire[i].closingTime
-                });
-                await annexAvailability.setDay(day);
-                await annexAvailability.setAnnex(annex);
-            }
-        }
-        return annex;
-    }
 
     /**
      *
@@ -99,6 +59,54 @@ class AssociationController {
             }
         });
         return association;
+    }
+
+    static async getAllAssociation(page) {
+        const va = await Association.count({
+            where: {
+                active: true
+            }
+        });
+        const element = 0 + (page - 1) * 10;
+        const data = await Association.findAll({
+            where: {
+                active: true
+            },
+            limit: 10,
+            offset: element
+        })
+        return {count: va, data: data}
+    }
+
+    static async getAllAssociationByName(page, name) {
+        const va = await Association.count({
+            where: {
+                name: {
+                    [op.like]: name + '%',
+                },
+                active: true
+            }
+        });
+        const element = 0 + (page - 1) * 10;
+        const data = await Association.findAll({
+            where: {
+                name: {
+                    [op.like]: name + '%',
+                },
+                active: true
+            },
+            limit: 3,
+            offset: element
+        });
+        return {count: va, data: data}
+    }
+
+    static async getAssociationById(id) {
+        return Association.findOne({
+            where: {
+                id: id
+            }
+        })
     }
 
 }

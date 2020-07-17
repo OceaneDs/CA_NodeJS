@@ -5,6 +5,41 @@ const AuthMiddleware = require('../middlewares/auth.middleware');
 
 
 module.exports = function (app) {
+
+    /**
+     *
+     */
+    app.get("/association/get/all/:page", AuthMiddleware.auth(), async (req, res) => {
+            try {
+                const association = await AssoviationController.getAllAssociation(req.params.page);
+                res.status(200).json(association);
+            } catch (err) {
+                res.status(409).json(err);
+            }
+        }
+    );
+
+    app.get("/association/get/:id", AuthMiddleware.auth(), async (req, res) => {
+            try {
+                const association = await AssoviationController.getAssociationById(req.params.id);
+                res.status(200).json(association);
+            } catch (err) {
+                res.status(409).json(err);
+            }
+        }
+    );
+    app.post("/association/get/byname", AuthMiddleware.auth(), async (req, res) => {
+        console.log(req.body.page);
+        console.log(req.body.name)
+            try {
+                const association = await AssoviationController.getAllAssociationByName(req.body.page,req.body.name);
+                res.status(200).json(association);
+            } catch (err) {
+                console.log(err)
+                res.status(409).json(err);
+            }
+        }
+    );
     /**
      *
      */

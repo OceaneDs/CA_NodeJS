@@ -125,6 +125,7 @@ module.exports = function (app) {
             const response = await UserController.updateUser(validForVolunteer, login, firstname, email, lastname, street, zipCode, city, phone, roleId, birthdate, req.params.idUser);
             res.status(200).json(response);
         } catch (err) {
+            console.log(err)
             res.status(409).json(err);
         }
     });
