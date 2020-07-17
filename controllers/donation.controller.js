@@ -102,7 +102,6 @@ class DonationController {
             }
         })
     }
-
     static async answerDonation(donations, user, idDonation) {
         for (let i = 0; i < donations.length; i++) {
             const donation = await UserDonation.create({
