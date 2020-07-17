@@ -13,7 +13,7 @@ const op = Sequelize.Op;
 const operatorsAliases = {
     $eq: op.eq,
     $or: op.or,
-}
+};
 
 class AnnexController {
 
