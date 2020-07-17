@@ -8,7 +8,7 @@ module.exports = function (app) {
     // create a donation
     app.post("/donation/:idAnnex", bodyParser.json(),AuthMiddleware.isManager(), async (req, res) => {
         try {
-            const donation = await DonationController.createDonation(req.body.name, req.body.description,req.body.productRequests, req.params.idAnnex);
+            const donation = await DonationController.createDonation(req.body.nom, req.body.description,req.body.productRequests, req.params.idAnnex);
             res.status(201).json(donation);
         } catch (err) {
             res.status(409).json(err);
