@@ -62,7 +62,7 @@ class DonationController {
      * @returns {Promise<void>}
      */
     static async deleteDonation(idDonation) {
-        return Donation.update({active: false}, {
+        return Donation.update({actif: false}, {
             where: {
                 id: idDonation
             }

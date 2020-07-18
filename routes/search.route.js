@@ -1,10 +1,9 @@
 const bodyParser = require('body-parser');
 const SearchController = require('../controllers').SearchController;
 const AuthMiddleware = require('../middlewares/auth.middleware');
-const { QueryTypes } = require('sequelize');
+//sconst {Sequelize} = require('sequelize');
 
 module.exports = function (app){
-
 
     app.get('/search/all/annexes', bodyParser.json(), AuthMiddleware.auth(), async (req, res) => {
         try {
@@ -97,9 +96,9 @@ module.exports = function (app){
     });
 
 
-    app.get('/search/all/:table', AuthMiddleware.isAdmin(), async (req, res) => {
+    app.get('/search/all/:table',AuthMiddleware.isAdmin(), async (req, res) => {
         try {
-            const tableData = await sequelize.query("SELECT * FROM `" + req.params.table + "`", { type: QueryTypes.SELECT });
+            const tableData = await Sequelize.query("SELECT * FROM `" + table + "`", {type: QueryTypes.SELECT});
             res.status(200).json(tableData);
         } catch (err) {
             console.log(err);

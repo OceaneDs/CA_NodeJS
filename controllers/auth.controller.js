@@ -72,7 +72,6 @@ class AuthController {
                         email: userFound.email,
                         userId: userFound.id,
                         role: userFound.role
-
                     },
                     'secret',
                     {

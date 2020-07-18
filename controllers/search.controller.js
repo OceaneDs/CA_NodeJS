@@ -14,7 +14,8 @@ const op = Sequelize.Op;
 const operatorsAliases = {
     $eq: op.eq,
     $or: op.or,
-}
+};
+
 
 class SearchController {
 
@@ -82,8 +83,8 @@ class SearchController {
     }
 
     static async searchNeed(name) {
-        const data = {don:[],service:[]};
-        const don =  await Donation.findAll({
+        const data = {don: [], service: []};
+        const don = await Donation.findAll({
             where: {
                 nom: {
                     [op.like]: name + '%'
@@ -92,7 +93,7 @@ class SearchController {
             }
         });
         data.don.push(...don);
-        const services =  await Service.findAll({
+        const services = await Service.findAll({
             where: {
                 nom: {
                     [op.like]: name + '%'
@@ -101,8 +102,10 @@ class SearchController {
             }
         });
         data.service.push(...services);
-        return  data;
+        return data;
     }
+
+
 }
 
 module.exports = SearchController;

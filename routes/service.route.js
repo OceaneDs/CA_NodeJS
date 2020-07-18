@@ -58,13 +58,13 @@ module.exports = function (app) {
         }
     });
 
-    app.post("/user/answer/service/:idService", AuthMiddleware.isVolunteer(), async (req, res) => {
+    app.get("/user/answer/service/:idService", AuthMiddleware.isVolunteer(), async (req, res) => {
         try {
             const authorization = req.headers['authorization'];
             const user = await Verification.userFromToken(authorization.split(" ")[1]);
             const service = await ServiceController.answerService(user, req.params.idService);
             if (service.message) {
-                res.status(400).json(service.message);
+                res.status(400).json({mesage: service.message});
             } else {
                 res.status(201).json(service);
             }
