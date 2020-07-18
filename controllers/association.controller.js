@@ -95,7 +95,7 @@ class AssociationController {
                 },
                 active: true
             },
-            limit: 3,
+            limit: 10,
             offset: element
         });
         return {count: va, data: data}
@@ -103,6 +103,9 @@ class AssociationController {
 
     static async getAssociationById(id) {
         return Association.findOne({
+            include:{
+                model:Annex
+            },
             where: {
                 id: id
             }

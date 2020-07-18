@@ -50,16 +50,19 @@ module.exports = function (app) {
 
     app.get("/service/get/:idService", AuthMiddleware.auth(), async (req, res) => {
         try {
-            const services = await ServiceController.getSeviceById(req.params.idAnnex);
+            const services = await ServiceController.getSeviceById(req.params.idService);
             res.status(200).json(services);
         } catch (e) {
+            console.log(e)
             res.status(400).json(e)
         }
     });
 
-    app.post("/user/:idUser/answer/service/:idService", AuthMiddleware.isVolunteer(), async (req, res) => {
+    app.post("/user/answer/service/:idService", AuthMiddleware.isVolunteer(), async (req, res) => {
         try {
-            const service = await ServiceController.answerService(req.params.idUser, req.params.idService);
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const service = await ServiceController.answerService(user, req.params.idService);
             if (service.message) {
                 res.status(400).json(service.message);
             } else {

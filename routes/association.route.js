@@ -28,11 +28,11 @@ module.exports = function (app) {
             }
         }
     );
-    app.post("/association/get/byname", AuthMiddleware.auth(), async (req, res) => {
-        console.log(req.body.page);
-        console.log(req.body.name)
+    app.post("/association/get/all/byname", bodyParser.json(), AuthMiddleware.auth(), async (req, res) => {
+            console.log(req.body.page);
+            console.log(req.body.name);
             try {
-                const association = await AssoviationController.getAllAssociationByName(req.body.page,req.body.name);
+                const association = await AssoviationController.getAllAssociationByName(req.body.page, req.body.name);
                 res.status(200).json(association);
             } catch (err) {
                 console.log(err)

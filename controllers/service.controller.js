@@ -1,5 +1,7 @@
 const models = require('../models');
 const Service = models.Service;
+const Annex = models.Annex;
+const Sequelize = require('sequelize');
 
 class ServiceController {
 
@@ -8,15 +10,15 @@ class ServiceController {
      * @param idService
      * @returns {Promise<void>}
      */
-    static async answerService(idUser, idService) {
+    static async answerService(user, idService) {
         const service = await Service.findOne({
             where: {
                 id: idService
             }
         });
-        const user = await User.findOne({
+        await Service.update({quantite: Sequelize.literal('quantite -' + 1)}, {
             where: {
-                id: idUser
+                id: idService
             }
         });
         if (user) {
@@ -103,31 +105,33 @@ class ServiceController {
      * @param idAnnex
      * @returns {Promise<void>}
      */
-    static async getSeviceById(idAnnex) {
+    static async getSeviceById(idService) {
         return Service.findOne({
+            include: {
+                model: Annex
+            },
             where: {
-                AnnexId: idAnnex
+                id: idService
             }
         });
     }
 
-     static async getPastServices(user) {
+    static async getPastServices(user) {
         const serviceList = await Service.findAll({
-            where:{
-                status:true,
-                actif:true
+            where: {
+                status: true,
+                actif: true
             }
         });
-         const myServices = [];
-         for (let i = 0; i < serviceList.length; i++) {
-             const service = serviceList[i];
-             const users = await serviceList.getUsers();
-             if (users.some(user => user.id === user.id)) {
-                 myServices.push(service);
-             }
-         }
-         return myServices;
-
+        const myServices = [];
+        for (let i = 0; i < serviceList.length; i++) {
+            const service = serviceList[i];
+            const users = await serviceList.getUsers();
+            if (users.some(user => user.id === user.id)) {
+                myServices.push(service);
+            }
+        }
+        return myServices;
     }
 
 }

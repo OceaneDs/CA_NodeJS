@@ -50,9 +50,10 @@ module.exports = function (app) {
 
     app.get("/donation/get/:idDonation", AuthMiddleware.auth(), async (req, res) => {
         try {
-            const services = await DonationController.getDonationById(req.params.idDonation);
-            res.status(200).json(services);
+            const donation = await DonationController.getDonationById(req.params.idDonation);
+            res.status(200).json(donation);
         } catch (e) {
+            console.log(e)
             res.status(400).json(e)
         }
     });

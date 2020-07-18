@@ -88,7 +88,7 @@ class DonationController {
 
     static async getDonationById(idDonation) {
         return Donation.findOne({
-            include: {
+            include: [{
                 model: Requerir,
                 include: {
                     model: Product,
@@ -97,11 +97,13 @@ class DonationController {
                     }
                 },
             },
+                {model: Annex}],
             where: {
                 id: idDonation
             }
         })
     }
+
     static async answerDonation(donations, user, idDonation) {
         for (let i = 0; i < donations.length; i++) {
             const donation = await UserDonation.create({
@@ -111,7 +113,7 @@ class DonationController {
                 DonationId: idDonation,
                 give: false
             });
-            const requerir = await Requerir.update({quantity: sequelize.literal('quantity -' + donations[i].quantity)}, {
+            const requerir = await Requerir.update({quantity: Sequelize.literal('quantity -' + donations[i].quantity)}, {
                 where: {
                     DonationId: idDonation,
                     ProductId: donations[i].productId
@@ -148,7 +150,7 @@ class DonationController {
                 response.push(don)
             }
         }
-        return {donationHistory:response};
+        return {donationHistory: response};
     }
 
 }
