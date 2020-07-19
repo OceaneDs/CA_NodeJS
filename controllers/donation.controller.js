@@ -106,6 +106,7 @@ class DonationController {
 
     static async answerDonation(donations, user, idDonation) {
         for (let i = 0; i < donations.length; i++) {
+            console.log(donations[i].productId)
             const donation = await UserDonation.create({
                 UserId: user.id,
                 quantity: donations[i].quantity,
@@ -113,6 +114,7 @@ class DonationController {
                 DonationId: idDonation,
                 give: false
             });
+            console.log("--------------------------------------------------------");
             const requerir = await Requerir.update({quantity: Sequelize.literal('quantity -' + donations[i].quantity)}, {
                 where: {
                     DonationId: idDonation,

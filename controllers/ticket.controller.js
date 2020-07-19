@@ -13,7 +13,7 @@ class TicketController {
      * @returns {Promise<Model> | Promise<Product> | Domain | Promise<void> | * | Promise<Credential | null>}
      */
     static createTicket(label, user) {
-        const number = Math.floor(Math.random() * Math.floor(9999999999));
+        const number = Math.floor(Math.random() * Math.floor(9999999));
         return Ticket.create({
             label: label,
             number: number,
