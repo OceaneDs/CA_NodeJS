@@ -44,7 +44,7 @@ module.exports = function (app){
             const authorization = req.headers['authorization'];
             const user = await Verification.userFromToken(authorization.split(" ")[1]);
             const ticket = await TicketController.closeTicket(req.params.id,user);
-            if (ticket.message){
+            if (ticket.message !== "Le ticket a ete clôturer"){
                 res.status(400).json(ticket.message);
             } else {
                 res.status(200).json(ticket);

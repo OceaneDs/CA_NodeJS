@@ -57,11 +57,7 @@ class TicketController {
             redactorId: user.id,
             sendDate: new Date()
         });
-        return Ticket.findOne({
-            where: {
-                id: id
-            }
-        })
+        return this.getTicket(id, user)
     }
 
     static async closeTicket(id, user) {
@@ -77,7 +73,7 @@ class TicketController {
         }
         if (!ticket.active) {
             return {
-                message: "Ce Ticket à été cloturer"
+                message: "Ce Ticket à déjà  été cloturer"
             }
         }
         if (ticket.UserId !== user.id && user.RoleId !== 4) {
@@ -116,7 +112,7 @@ class TicketController {
                 include: {model: User, as: 'redactor'},
                 separate: true,
                 order: [
-                    [ 'id', 'ASC']
+                    ['id', 'ASC']
                 ]
 
             },
@@ -139,7 +135,7 @@ class TicketController {
             return {
                 message: "Vous  n'avez pas le droit de clôture ce ticket"
             }
-         }
+        }
         return ticket;
     }
 }
