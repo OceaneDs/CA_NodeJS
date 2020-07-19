@@ -71,7 +71,7 @@ class AuthController {
                 const token = jsonwebtoken.sign({
                         email: userFound.email,
                         userId: userFound.id,
-                        role: userFound.role
+                        role: userFound.RoleId
                     },
                     'secret',
                     {

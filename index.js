@@ -22,6 +22,7 @@ async function bootstrap() {
         res.header("Access-Control-Allow-Methods", "GET,HEAD,POST,DELETE,PUT,OPTIONS");
         next();
     });
+    app['s'] = models.sequelize;
     routes(app);
 
     app.listen(3000, () => console.log(`Listening on 3000`));
