@@ -105,8 +105,8 @@ class ServiceController {
      * @param idAnnex
      * @returns {Promise<void>}
      */
-    static async getSeviceById(idService) {
-        return Service.findOne({
+    static async getSeviceById(idService, user) {
+        const service = await Service.findOne({
             include: {
                 model: Annex
             },
@@ -114,6 +114,15 @@ class ServiceController {
                 id: idService
             }
         });
+        let isAnswer
+        const users = await service.getUsers();
+        if (users.some(vol => vol.id === user.id)) {
+            isAnswer = true;
+        } else {
+            isAnswer = false
+        }
+        console.log({...service, isAnswer: isAnswer})
+        return {service: service, isAnswer: isAnswer};
     }
 
     static async getPastServices(user) {

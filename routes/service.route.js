@@ -50,7 +50,9 @@ module.exports = function (app) {
 
     app.get("/service/get/:idService", AuthMiddleware.auth(), async (req, res) => {
         try {
-            const services = await ServiceController.getSeviceById(req.params.idService);
+            const authorization = req.headers['authorization'];
+            const user = await Verification.userFromToken(authorization.split(" ")[1]);
+            const services = await ServiceController.getSeviceById(req.params.idService, user);
             res.status(200).json(services);
         } catch (e) {
             console.log(e)
